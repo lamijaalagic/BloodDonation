@@ -1,0 +1,43 @@
+.frame {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    background-color:rgb(196, 72, 72);
+}
+.header{
+    margin: 20pt;
+    position: top;
+    float: left;
+    color: rgb(196, 72, 72);
+}
+h1{
+    text-transform: uppercase;
+}
+
+form{
+    width: auto;
+    text-align: center;
+    padding: 1.2em;
+}
+
+input {
+    width: 250px;
+    font-size: 14px;
+}
+
+.submit-btn{
+   
+    border-radius: 8px;
+    width: 200px;
+    height: 30px;
+    font-size: 14px;
+    background-color: white;
+    color: black;
+    border: 2px solid rgb(196, 72, 72);
+    transition-duration: 0.4s;
+  }
+  
+  .submit-btn:hover {
+    background-color: rgb(196, 72, 72);
+    color: rgb(196, 72, 72);
+  }

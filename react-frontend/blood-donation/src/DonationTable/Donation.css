@@ -1,0 +1,57 @@
+.body{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    height: 100%;
+}
+
+.userDiv{
+  width: 100%;
+  min-height: 550px;
+  justify-content: space-between;
+  padding: 5px;
+  background-color: rgb(211, 209, 209);
+  
+}
+
+input {
+  margin: 5px;
+  border: 2px solid gray;
+  border-radius: 8px;
+  height: 30px;
+}
+
+button {
+    border-radius: 8px;
+    width: 30%;
+    height: 30px;
+    font-size: 14px;
+    color: white;
+    background-color:rgb(172, 22, 22);
+    border: 2px solid gray;
+    transition-duration: 0.4s;
+    font-weight: bold;
+  }
+  
+  button:hover {
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+  }
+
+.selectBox {
+  width: 30%;
+  height: 30px;
+  text-align: center;
+  background-color: rgb(214, 212, 212);
+  margin: 5px;
+  border-radius: 4px;
+}
+
+.filteri {
+  text-align: left;
+  justify-content: left;
+  padding: 14px 16px;
+}
+
+.userView{
+  min-height: 350px;
+}

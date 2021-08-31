@@ -1,0 +1,13 @@
+table {
+    border: 2px solid black;
+    margin: 10px;
+}
+
+th {
+    width: 16%;
+    background-color: rgb(214, 212, 212);
+}
+
+td {
+    font-size: 14px;
+}

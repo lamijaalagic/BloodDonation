@@ -1,0 +1,89 @@
+.frame {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    background-color:white;
+}
+.header{
+    margin: 20pt;
+    position: top;
+    float: left;
+    color: rgb(172, 22, 22);
+    font-style: italic;
+}
+    h1{
+        text-transform: uppercase;
+        font-style: normal;
+    }
+
+
+.frameRow {
+    flex-direction: row;
+    width: 90%;
+    height: 100%;
+}
+
+.desni{
+    float: right;
+    width: 30%;
+    padding: 1.2em;
+    text-align: left;
+    
+}
+
+.sredina{
+    float: left;
+    width: auto;
+   
+    text-align: left;
+    padding: 1.2em;
+}
+
+.lijevi{
+    width: 20%;
+    height: 100%;
+    float: left;
+    background-color: rgb(179, 179, 179);
+    text-align: justify;
+    padding: 1.2em;
+}
+img {
+    width: fit-content;
+    height: 50%;
+    position: relative;
+    display: inline-block;
+    margin: 7px;
+    
+}
+
+.ListaButtona{
+    width: 90%;
+    height: 5em;
+    font-size: 14px;
+    border-radius: 4px;
+    font-weight: bold;
+    color: white;
+    background-color:rgb(172, 22, 22);
+}
+
+.Login {
+    border-radius: 8px;
+    width: 30%;
+    height: 30px;
+    font-size: 14px;
+    color: white;
+    background-color:rgb(172, 22, 22);
+    border: 2px solid rgb(172, 22, 22);
+    transition-duration: 0.4s;
+    float: right;
+    font-weight: bold;
+  }
+  
+  .Login:hover {
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+  }
+
+  .openLogin {
+      color: white;
+      text-decoration: none;
+  }

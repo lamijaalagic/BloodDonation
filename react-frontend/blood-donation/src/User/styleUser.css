@@ -1,0 +1,32 @@
+.body{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.slika {
+    width: 200px;
+    height: 100px;
+    
+}
+
+.glavni{
+    min-height: 350px;
+}
+
+.okvir{
+    text-align: left;
+    margin: 5px;
+}
+
+label {
+    width: 30%;
+    height: 30px;
+    margin: 5px;
+    font-size: 16px;
+}
+
+.left, .right{
+    float: left;
+    width: 50%;
+}
