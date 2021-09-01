@@ -88,7 +88,7 @@ public class RoleController {
         }
     }
 
-    @DeleteMapping("/{id")
+    @DeleteMapping("/{id}")
     void DeleteRole (@PathVariable Integer id) {
         try {
             roleService.DeleteRole(id);

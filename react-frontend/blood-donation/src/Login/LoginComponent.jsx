@@ -7,43 +7,6 @@ import jwt from 'jsonwebtoken'
 
 class LoginComponent extends Component {
 
-    /*constructor(props) {
-        super(props)
-        this.state={
-            username:"",
-            password:"",
-            errorMessage:""
-        }
-        this.handleSubmit= this.handleSubmit.bind(this)
-        this.handleChange= this.handleChange.bind(this)
-    }
-
-    handleSubmit(event) {
-        alert("localstorage")
-        axios.post('http://localhost:8080/authenticate', {
-            username: this.state.username,
-            password: this.state.password
-        })
-        .then ((response) => {
-            this.setState({errorMessage:""})
-            //potrebno je u localStorage spremiti podatke, username i token da bi se mogla provjeriti njihova ispravnost i validnost
-            //najlakse je dodati i rolu i na osnovu nje podijeliti pristupne panele
-            localStorage.token="ok"
-            window.alert("localstorage")
-            localStorage.username=this.state.username
-        }, (error) => {
-            this.setState({errorMessage:"Neispravni pristupni podaci"})
-        }
-        );
-        event.preventDefault()
-    }
-
-    handleChange(event) {
-        this.setState({
-            [event.target.name]: event.target.value
-        })
-    }*/
-
     constructor() {
         super()
         this.state = {
@@ -87,6 +50,7 @@ class LoginComponent extends Component {
                     }
                     else if (this.state.decoded_token.role === "EMPLOYEE") {
                         this.state.token = response.data.token
+                        this.props.history.push('/employee')
                     }
                     toast.success('Uspjesna prijava na sistem', { position: toast.POSITION.TOP_RIGHT })
                 }

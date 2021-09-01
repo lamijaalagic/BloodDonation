@@ -90,7 +90,7 @@ public class BloodTypeController {
         }
     }
 
-    @DeleteMapping("/{id")
+    @DeleteMapping("/{id}")
     void DeleteBloodType (@PathVariable Integer id) {
         try {
             bloodTypeService.DeleteBloodType(id);

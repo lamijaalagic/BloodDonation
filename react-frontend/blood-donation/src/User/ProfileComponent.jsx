@@ -83,7 +83,7 @@ class ProfileComponent extends Component {
             else {
                 month = datum.getMonth() + 3;
             }
-            var day = datum.getDate();
+            var day = datum.getDate()+1;
             var year = datum.getFullYear();
             this.state.nextDonationDate = year + '-' + month + '-' + day;
         })
@@ -93,8 +93,9 @@ class ProfileComponent extends Component {
         return ( 
             <div className="glavni" >
                 <div className="left">
-                <h2>Detalji o meni</h2>
-                <img className="slika" src={crvena_kap} alt="Crvena kap"/>
+                    <h2>Detalji o meni</h2>
+                    <img className="slika" src={crvena_kap} alt="Crvena kap"/>
+                    
                 </div>
                 <div className="right">
                 <div className="okvir">

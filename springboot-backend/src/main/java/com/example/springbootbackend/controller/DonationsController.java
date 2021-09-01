@@ -111,7 +111,7 @@ public class DonationsController {
         }
     }
 
-    @DeleteMapping("/{id")
+    @DeleteMapping("/{id}")
     void DeleteDonation (@PathVariable Integer id) {
         try {
             donationsService.DeleteDonation(id);

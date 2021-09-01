@@ -111,7 +111,7 @@ public class UserDataController {
         }
     }
 
-    @DeleteMapping("/{id")
+    @DeleteMapping("/{id}")
     void DeleteUser (@PathVariable Integer id) {
         try {
             userService.DeleteUser(id);

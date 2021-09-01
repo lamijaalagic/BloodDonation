@@ -43,7 +43,7 @@ class AddBloodType extends Component {
         }
     }
 
-    createRole = (event) => {
+    createBloodType = (event) => {
         event.preventDefault();
             axios.post('http://localhost:8080/bloodType', {
                 bloodType:this.state.bloodType,
@@ -76,7 +76,7 @@ class AddBloodType extends Component {
                     <div>
                         <label style={{ color: "red" }}>{this.state.errorMessage}</label>
                         <br/>
-                        <button className="loginButton" onClick={e => this.createRole(e)} type="submit"> Dodaj krvnu grupu</button>
+                        <button className="loginButton" onClick={e => this.createBloodType(e)} type="submit"> Dodaj krvnu grupu</button>
                     </div>
                 </form>
             </div>

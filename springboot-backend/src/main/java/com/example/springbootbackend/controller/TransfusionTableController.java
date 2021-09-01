@@ -109,7 +109,7 @@ public class TransfusionTableController {
         }
     }
 
-    @DeleteMapping("/{id")
+    @DeleteMapping("/{id}")
     void DeleteTransfusion(@PathVariable Integer id) {
         try {
             transfusionTableService.DeleteTransfusion(id);

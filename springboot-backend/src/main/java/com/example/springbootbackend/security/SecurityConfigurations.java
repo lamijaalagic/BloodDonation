@@ -42,6 +42,8 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST,"/authenticate","validate-token","/**")
                 .permitAll()
+                .antMatchers(HttpMethod.PUT,"/authenticate","validate-token","/**")
+                .permitAll()
 
                 //swagger
                 .antMatchers(HttpMethod.GET, "/swagger-resources/**",

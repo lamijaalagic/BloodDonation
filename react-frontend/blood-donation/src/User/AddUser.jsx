@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 
@@ -16,6 +17,7 @@ class AddUser extends Component {
             krvneGrupe:[],
             odabranaKrvnaGrupa: {},
             KG:'',
+            idOdabraneKB:0,
             residencePlace:'',
             address:'',
             phoneNumber:'',
@@ -116,9 +118,10 @@ class AddUser extends Component {
             const arrayelemnt = this.state.krvneGrupe.filter(item => item.id == selectedOption.target.value)
             this.setState({
                 odabranaKrvnaGrupa: arrayelemnt[0],
-                KG:selectedOption.target.value
+                KG:selectedOption.target.value,
+                idOdabraneKB:arrayelemnt[0].id
             });
-            console.log(arrayelemnt);
+            //console.log(arrayelemnt);
         }
     }
 
@@ -140,7 +143,7 @@ class AddUser extends Component {
             this.setState({
                 role: arrayelemnt[0]
             });
-            console.log(this.state.role);
+            //console.log(this.state.role);
         }
     }
 
@@ -171,11 +174,11 @@ class AddUser extends Component {
             }).then(response => {
                 if (response.status === 200 || response.status === 201) {
                     this.props.history.push('/')
-                    toast.success('Uspješno kreiran racun', { position: toast.POSITION.TOP_RIGHT })
+                    alert('Uspješno kreiran racun')
                 }
             }).catch(err => {
                 console.log(err.response.data.message.toString())
-                toast.error(err.response.data.message.toString(), { position: toast.POSITION.TOP_RIGHT })
+                //toast.error(err.response.data.message.toString(), { position: toast.POSITION.TOP_RIGHT })
             })
         }
     }
@@ -210,6 +213,7 @@ class AddUser extends Component {
                         <select className="selectBox" onChange={(e) => {this.handleChangeTipKrvi(e);}} value={this.state.KG} name="KG">
                             {this.state.krvneGrupe.map(grupa => <option key={grupa.id} value={grupa.id} >{grupa.bloodType}{grupa.rhFactor ? '+':'-'}</option>)}
                         </select>
+                        <button className="loginButton"> <Link className="openLogin" to="/admin/dodaj_grupu">Dodaj krvnu grupu.</Link> </button>
                     </div>
 
                     </div>

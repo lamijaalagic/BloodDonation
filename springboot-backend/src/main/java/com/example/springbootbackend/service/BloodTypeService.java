@@ -42,9 +42,11 @@ public class BloodTypeService {
     public BloodType FindByTypeBloodRhFactor (String bloodType, Boolean rhFactor) {
         List<BloodType> types= new ArrayList<>();
         bloodTypeRepository.findByBloodType(bloodType).forEach(types::add);
-        for (BloodType one:types) {
-            if (one.getRhFactor() == rhFactor)
-                return one;
+        if (!types.isEmpty()) {
+            for (BloodType one : types) {
+                if (one.getRhFactor() == rhFactor)
+                    return one;
+            }
         }
         return null;
     }

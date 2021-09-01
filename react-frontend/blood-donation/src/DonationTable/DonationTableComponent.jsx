@@ -9,6 +9,8 @@ class DonationTableComponent extends Component {
         super(props)
         this.state={
             donacije:[],
+            donacijeSVE:[],
+            donacijaODABRANA:{},
             user:{},
             donationDate:'',
             donationPlace:'',
@@ -16,7 +18,10 @@ class DonationTableComponent extends Component {
             AllUsers:{},
             mjesto:'',
             filterUsername:'',
-            errorMessage:''
+            errorMessage:'',
+            showMe:false,
+            NOVOdonationPlace:'',
+            NOVObloodQuantity:0
         }
         this.handleChange = this.handleChange.bind(this)
         /*this.filterByMjesto=this.filterByMjesto(this)
@@ -29,7 +34,8 @@ class DonationTableComponent extends Component {
             .then (response=>{
                 const donacije= response.data;
                 this.setState({donacije});
-                console.log(this.state.donacije)
+                const donacijeSVE=response.data;
+                this.setState({donacijeSVE});
             })
         }
         /*else {
@@ -46,6 +52,9 @@ class DonationTableComponent extends Component {
         this.setState({
             [event.target.name]: event.target.value
         })
+        if (event.target.value=="") {
+            this.setState({donacije: this.state.donacijeSVE});
+        }
     }
 
     filterByUser(e) {
@@ -79,7 +88,31 @@ class DonationTableComponent extends Component {
         }
         else this.setState({errorMessage:"Unesite naziv mjesta po kojem zelite filtrirati."})
     }
-    
+
+    uredi(e,profil) {
+        this.setState({donacijaODABRANA:profil});
+        this.setState({showMe:true});
+    }
+
+    modifikujPodatke(e) {
+        e.preventDefault();
+        if (this.state.NOVObloodQuantity==0) this.state.NOVObloodQuantity=this.state.donacijaODABRANA.bloodQuantity;
+        if (this.state.NOVOdonationPlace=='') this.state.NOVOdonationPlace=this.state.donacijaODABRANA.donationPlace;
+        axios.put('http://localhost:8080/donations/'+this.state.donacijaODABRANA.id, {
+                user: this.state.donacijaODABRANA.user,
+                donationDate: this.state.donacijaODABRANA.donationDate,
+                donationPlace:this.state.NOVOdonationPlace,
+                bloodQuantity:this.state.NOVObloodQuantity
+        }).then(response => {
+            if (response.status === 200 || response.status === 201) {
+                this.props.history.push('/')
+                alert('Uspješno izmijenjeni podaci')
+            }
+        }).catch(err => {
+            console.log(err.response.data.message.toString())
+        })
+        this.setState({showMe:false});
+    }
     
     render() {
         return ( 
@@ -92,6 +125,7 @@ class DonationTableComponent extends Component {
                             <th>Datum donacije</th>
                             <th>Mjesto donacije</th>
                             <th>Količina doniranih doza</th>
+                            <th>Uredi podatke</th>
                         </tr>
                         {this.state.donacije.map(don => {
                         return(
@@ -100,6 +134,7 @@ class DonationTableComponent extends Component {
                             <td>{don.donationDate}</td>
                             <td>{don.donationPlace}</td>
                             <td>{don.bloodQuantity}</td>
+                            <td><button className="tabelaButton" onClick={e => this.uredi(e,don)}>Uredi</button></td>
                         </tr>)
 })}
                     </table>
@@ -113,6 +148,17 @@ class DonationTableComponent extends Component {
                     <br/>
                     <label style={{ color: "red" }}>{this.state.errorMessage}</label>
                 </div>
+
+                {this.state.showMe? 
+                <div >
+                    <input className="loginInput" type="text" onChange={e => this.handleChange(e)} placeholder="Mjesto donacije" name="NOVOdonationPlace"/>
+                    <br/>
+                    <input className="loginInput" type="number" onChange={e => this.handleChange(e)} placeholder="Kolicina doza krvi" name="NOVObloodQuantity" />
+                    <br/>
+                    <button className="loginButton" onClick={e => {this.setState({showMe:false});}} type="submit"> Nazad</button>
+                    <button className="loginButton" onClick={e => this.modifikujPodatke(e)} type="submit"> Promijeni podatke</button>
+                </div>
+                 :null}
             </div>
         )
     }
