@@ -5,7 +5,9 @@ import LoginComponent from './Login/LoginComponent';
 import HomePageComponent from './HomePage/HomePageComponent';
 import AdminComponent from './Navigation/AdminComponent';
 import UserComponent from './Navigation/UserComponent';
-import EmployeeComponent from './Navigation/EmployeeComponent';
+import EmployeeDoctorComponent from './Navigation/EmployeeDoctorComponent';
+import EmployeeHospitalManagementComponent from './Navigation/EmployeeHospitalManagementComponent';
+import EmployeeMedicalTechnicianComponent from './Navigation/EmployeeMedicalTechnicianComponent';
 
 function App() {
   return (
@@ -16,7 +18,9 @@ function App() {
           <Route path="/login" exact component={LoginComponent}/>
           <Route path="/admin" exact component={AdminComponent}/>
           <Route path="/user" exact component={UserComponent}/>
-          <Route path="/employee" exact component={EmployeeComponent}/>
+          <Route path="/employeeDoctor" exact component={EmployeeDoctorComponent}/>
+          <Route path="/employeeHospitalManagement" exact component={EmployeeHospitalManagementComponent}/>
+          <Route path="/employeeMedicalTechnician" exact component={EmployeeMedicalTechnicianComponent}/>
         </Switch>
       </Router>
     </div>

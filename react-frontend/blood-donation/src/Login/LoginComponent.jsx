@@ -39,20 +39,33 @@ class LoginComponent extends Component {
             .then((response) => {
                 if(response.status === 200 || response.status === 201) {
                     localStorageService.setToken(response.data)
-                    console.log(response)
+                    //console.log(response)
                     this.state.decoded_token=jwt.decode(response.data.token)
-                    console.log(this.state.decoded_token)
-                    if (this.state.decoded_token.role === "ADMIN") {
-                        this.props.history.push('/admin')
-                    }
-                    else if (this.state.decoded_token.role === "USER") {
-                        this.props.history.push('/user')
-                    }
-                    else if (this.state.decoded_token.role === "EMPLOYEE") {
-                        this.state.token = response.data.token
-                        this.props.history.push('/employee')
-                    }
-                    toast.success('Uspjesna prijava na sistem', { position: toast.POSITION.TOP_RIGHT })
+                    //console.log(this.state.decoded_token)
+                    axios.post('http://localhost:8080/validate-token', {
+                        username: localStorage.getItem('username'),
+                        token:localStorage.getItem('access_token')
+                    }).then(response => {
+                        if (this.state.decoded_token.role === "ADMIN") {
+                            this.props.history.push('/admin')
+                        }
+                        else if (this.state.decoded_token.role === "USER") {
+                            this.props.history.push('/user')
+                        }
+                        else if (this.state.decoded_token.role === "EMPLOYEE_DOCTOR") {
+                            this.state.token = response.data.token
+                            this.props.history.push('/employeeDoctor')
+                        }
+                        else if (this.state.decoded_token.role === "EMPLOYEE_MEDICAL_TECH") {
+                            this.state.token = response.data.token
+                            this.props.history.push('/employeeMedicalTechnician')
+                        }
+                        else if (this.state.decoded_token.role === "EMPLOYEE_HOSPITAL_MANAG") {
+                            this.state.token = response.data.token
+                            this.props.history.push('/employeeHospitalManagement')
+                        }
+                        toast.success('Uspjesna prijava na sistem', { position: toast.POSITION.TOP_RIGHT })
+                    })
                 }
             }).catch (err => {
                 console.log(err)

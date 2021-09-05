@@ -38,9 +38,9 @@ class ProfileComponent extends Component {
         //dohvatanje podataka
         //alert(localStorage.getItem('access_token'))
         axios.get('http://localhost:8080/user/username?username='+localStorage.getItem('username'), {
-            /*headers:{
-                'Authorization':'Bearer ${token}'
-            }*/
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem('access_token')
+                }
         }).then(response=>{
             const userData = response.data;
             this.setState({ userData })
@@ -60,7 +60,11 @@ class ProfileComponent extends Component {
     }
 
     nextDonationPosible() {
-        axios.get('http://localhost:8080/donations/user?username='+localStorage.getItem('username'))
+        axios.get('http://localhost:8080/donations/user?username='+localStorage.getItem('username'), {
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem('access_token')
+            }
+    })
         .then (response=>{
             const data=response.data;
             //pronaci najveci datum i njemu dodati 3 ili 4 mjeseca

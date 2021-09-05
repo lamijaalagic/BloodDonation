@@ -55,7 +55,11 @@ class ProfileList extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://localhost:8080/user')
+        axios.get('http://localhost:8080/user', {
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem('access_token')
+            }
+    })
         .then (response=>{
             const useri= response.data;
             this.setState({useri});
@@ -109,7 +113,11 @@ class ProfileList extends Component {
         console.log(this.state.rhF)
         e.preventDefault();
         if (this.state.tipKrvi!='') {
-            axios.get('http://localhost:8080/user/bloodType?bloodType='+this.state.blood+"&rhFactor="+this.state.rhF).then(
+            axios.get('http://localhost:8080/user/bloodType?bloodType='+this.state.blood+"&rhFactor="+this.state.rhF, {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem('access_token')
+                }
+        }).then(
             response => {
                 const useri= response.data;
                 this.setState({useri});
@@ -125,7 +133,11 @@ class ProfileList extends Component {
     filterByUsername(e) {
         e.preventDefault();
         if (this.state.korisnik!='') {
-            axios.get('http://localhost:8080/user/username?username='+this.state.korisnik).then(
+            axios.get('http://localhost:8080/user/username?username='+this.state.korisnik, {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem('access_token')
+                }
+        }).then(
             response => {
                 const useri=[];
                 useri.push(response.data);
@@ -166,7 +178,11 @@ class ProfileList extends Component {
             phoneNumber:this.state.NOVOphoneNumber,
             gender: this.state.userODABRANI.gender,
             donationNeeded: this.state.NOVOdonationNeeded
-        }).then(response => {
+        }, {
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem('access_token')
+            }
+    }).then(response => {
             if (response.status === 200 || response.status === 201) {
                 this.props.history.push('/')
                 alert('Uspješno izmijenjeni podaci')
@@ -176,6 +192,17 @@ class ProfileList extends Component {
             //toast.error(err.response.data.message.toString(), { position: toast.POSITION.TOP_RIGHT })
         })
         this.setState({showMe:false});
+        axios.get('http://localhost:8080/user', {
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem('access_token')
+            }
+    })
+        .then (response=>{
+            const useri= response.data;
+            this.setState({useri});
+            const useriSVI= response.data;
+            this.setState({useriSVI});
+        })
     }
      
 

@@ -45,7 +45,11 @@ class AddTransfusion extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://localhost:8080/user').then(
+        axios.get('http://localhost:8080/user', {
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem('access_token')
+            }
+    }).then(
             res => {
                 const korisnici = res.data
                 this.setState({ korisnici })
@@ -58,7 +62,11 @@ class AddTransfusion extends Component {
             toast.error(err.response.data.message.toString(), { position: toast.POSITION.TOP_RIGHT })
         })
 
-        axios.get('http://localhost:8080/bloodType').then(
+        axios.get('http://localhost:8080/bloodType', {
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem('access_token')
+            }
+    }).then(
             response=>{
                 const krv=response.data
                 this.setState({krv})
@@ -103,7 +111,11 @@ class AddTransfusion extends Component {
                 emergency: this.state.emergency,
                 bloodQuantityNeeded: this.state.bloodQuantityNeeded,
                 details: this.state.details
-            }).then(response => {
+            }, {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem('access_token')
+                }
+        }).then(response => {
                 if (response.status === 200 || response.status === 201) {
                     this.props.history.push('/')
                     toast('Uspješno kreiran racun', { position: toast.POSITION.TOP_RIGHT })

@@ -21,7 +21,9 @@ class DonationTableComponent extends Component {
             errorMessage:'',
             showMe:false,
             NOVOdonationPlace:'',
-            NOVObloodQuantity:0
+            NOVObloodQuantity:0,
+            showDonator:false,
+            donatorODABRANI:{}
         }
         this.handleChange = this.handleChange.bind(this)
         /*this.filterByMjesto=this.filterByMjesto(this)
@@ -29,15 +31,19 @@ class DonationTableComponent extends Component {
     }
 
     componentDidMount() {
-        if(localStorage.getItem('role')==="ADMIN") {
-            axios.get('http://localhost:8080/donations')
+        
+            axios.get('http://localhost:8080/donations', {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem('access_token')
+                }
+            })
             .then (response=>{
                 const donacije= response.data;
                 this.setState({donacije});
                 const donacijeSVE=response.data;
                 this.setState({donacijeSVE});
             })
-        }
+       
         /*else {
             axios.get('http://localhost:8080/user?username='+localStorage.getItem('username'))
             .then (response=>{
@@ -60,7 +66,11 @@ class DonationTableComponent extends Component {
     filterByUser(e) {
         e.preventDefault();
         if (this.state.filterUsername!=='') {
-            axios.get('http://localhost:8080/donations/user?username='+this.state.filterUsername).then(
+            axios.get('http://localhost:8080/donations/user?username='+this.state.filterUsername, {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem('access_token')
+                }
+        }).then(
             response => {
                 const donacije= response.data;
                 this.setState({donacije});
@@ -77,7 +87,11 @@ class DonationTableComponent extends Component {
         e.preventDefault();
         if (this.state.mjesto.length !== 0) {
             //const fMjesto=this.state.mjesto;
-            axios.get('http://localhost:8080/donations/donationPlace?donationPlace='+this.state.mjesto).then(
+            axios.get('http://localhost:8080/donations/donationPlace?donationPlace='+this.state.mjesto, {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem('access_token')
+                }
+        }).then(
             response => {
                 const donacije= response.data;
                 this.setState({donacije});
@@ -103,7 +117,11 @@ class DonationTableComponent extends Component {
                 donationDate: this.state.donacijaODABRANA.donationDate,
                 donationPlace:this.state.NOVOdonationPlace,
                 bloodQuantity:this.state.NOVObloodQuantity
-        }).then(response => {
+        }, {
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem('access_token')
+            }
+    }).then(response => {
             if (response.status === 200 || response.status === 201) {
                 this.props.history.push('/')
                 alert('Uspješno izmijenjeni podaci')
@@ -112,8 +130,25 @@ class DonationTableComponent extends Component {
             console.log(err.response.data.message.toString())
         })
         this.setState({showMe:false});
+        axios.get('http://localhost:8080/donations', {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem('access_token')
+                }
+            })
+            .then (response=>{
+                const donacije= response.data;
+                this.setState({donacije});
+                const donacijeSVE=response.data;
+                this.setState({donacijeSVE});
+            })
     }
-    
+
+    prikazDonatora(e,d) {
+        e.preventDefault();
+        this.setState({donatorODABRANI:d.user});
+        this.setState({showDonator:true});
+    }
+
     render() {
         return ( 
             <div className="userView">
@@ -126,6 +161,7 @@ class DonationTableComponent extends Component {
                             <th>Mjesto donacije</th>
                             <th>Količina doniranih doza</th>
                             <th>Uredi podatke</th>
+                            <th>Detalji o osobi koja je donirala krv</th>
                         </tr>
                         {this.state.donacije.map(don => {
                         return(
@@ -135,6 +171,7 @@ class DonationTableComponent extends Component {
                             <td>{don.donationPlace}</td>
                             <td>{don.bloodQuantity}</td>
                             <td><button className="tabelaButton" onClick={e => this.uredi(e,don)}>Uredi</button></td>
+                            <td><button className="tabelaButton" onClick={e => this.prikazDonatora(e,don)}>Prikaži detalje o donatoru</button></td>
                         </tr>)
 })}
                     </table>
@@ -157,6 +194,46 @@ class DonationTableComponent extends Component {
                     <br/>
                     <button className="loginButton" onClick={e => {this.setState({showMe:false});}} type="submit"> Nazad</button>
                     <button className="loginButton" onClick={e => this.modifikujPodatke(e)} type="submit"> Promijeni podatke</button>
+                </div>
+                 :null}
+
+                {this.state.showDonator? 
+                <div >
+                    <label><b>Ime i prezime: </b></label>
+                    <label>{this.state.donatorODABRANI.firstname}</label>
+                    <label>{this.state.donatorODABRANI.lastname}</label>
+                <br/>
+                    <label><b>Krvna grupa: </b></label>
+                    <lable>{this.state.donatorODABRANI.typeOfBlood.bloodType}</lable>
+                    <label>{this.state.donatorODABRANI.typeOfBlood.rhFactor ? '+':'-'}</label>
+                    
+                <br/>
+                    <label><b>Datum rođenja: </b></label>
+                    <label>{this.state.donatorODABRANI.birthDate}</label>
+                <br/>
+                    <label><b>Spol: </b></label>
+                    <label>{this.state.donatorODABRANI.gender}</label>
+                <br/>
+                    <label><b>Mjesto prebivališta: </b></label>
+                    <label>{this.state.donatorODABRANI.residencePlace}</label>
+                <br/>
+                    <label><b>Adresa: </b></label>
+                    <label>{this.state.donatorODABRANI.address}</label>
+                <br/>
+                    <label><b>Broj telefona: </b></label>
+                    <label>{this.state.donatorODABRANI.phoneNumber}</label>
+                <br/>
+                    <label><b>Email: </b></label>
+                    <label>{this.state.donatorODABRANI.email}</label>
+                <br/>
+                
+                    <label><b>Potrebna donacija: </b></label>
+                    <label>{this.state.donatorODABRANI.donationNeeded ? 'Da':'Ne'}</label>
+                <br/>
+                    <label><b>Username: </b></label>
+                    <label>{this.state.donatorODABRANI.username}</label>
+                <br/>
+                    <button className="loginButton" onClick={e => {this.setState({showDonator:false});}} type="submit"> Nazad</button>
                 </div>
                  :null}
             </div>

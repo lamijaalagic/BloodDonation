@@ -39,7 +39,11 @@ class AddDonation extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://localhost:8080/user').then(
+        axios.get('http://localhost:8080/user', {
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem('access_token')
+            }
+    }).then(
             res => {
                 const korisnici = res.data
                 this.setState({ korisnici })
@@ -80,7 +84,11 @@ class AddDonation extends Component {
                 donationDate: this.state.donationDate,
                 donationPlace:this.state.donationPlace,
                 bloodQuantity:this.state.bloodQuantity
-            }).then(response => {
+            }, {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem('access_token')
+                }
+        }).then(response => {
                 if (response.status === 200 || response.status === 201) {
                     this.props.history.push('/')
                     toast.success('Uspješno kreirana donacija', { position: toast.POSITION.TOP_RIGHT })

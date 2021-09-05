@@ -2,18 +2,21 @@ import React, {Component} from 'react'
 import { Link } from "react-router-dom"
 import "./stylePages.css"
 
-class UserPage extends Component {
+class EmployeeHospitalManagementPage extends Component {
     render() {
         return (
             <nav className="navbar">
                 <ul>
-                    <Link to="/user/profil">
+                    <Link to="/employeeHospitalManagement/profil">
                         <li>Moj profil</li>
                     </Link>
-                    <Link to="/user/transfuzije_krvi">
+                    <Link to="/employeeHospitalManagement/lista_profila">
+                        <li>Pregled korisnika</li>
+                    </Link>
+                    <Link to="/employeeHospitalManagement/transfuzije_krvi">
                         <li>Pregled potrebnih transfuzija krvi</li>
                     </Link>
-                    <Link to="/user/tablica_donacija">
+                    <Link to="/employeeHospitalManagement/tablica_donacija">
                         <li>Tabelarni pregled donacija</li>
                     </Link>
                 </ul>
@@ -21,4 +24,4 @@ class UserPage extends Component {
         )
     }
 }
-export default UserPage
+export default EmployeeHospitalManagementPage

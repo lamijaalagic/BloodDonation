@@ -40,23 +40,35 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST,"/authenticate","validate-token","/**")
-                .permitAll()
-                .antMatchers(HttpMethod.PUT,"/authenticate","validate-token","/**")
+                .antMatchers(HttpMethod.POST,"/authenticate","/validate-token")
                 .permitAll()
 
-                //swagger
-                .antMatchers(HttpMethod.GET, "/swagger-resources/**",
-                        "/swagger-ui.html",
-                        "/v2/api-docs",
-                        "/webjars",
-                        "/csrf",
-                        "/h2/*",
-                        "/**")
-                .permitAll()
+                .antMatchers(HttpMethod.PUT,"/transfusionTable/{id}")
+                .hasAnyAuthority( "ADMIN","EMPLOYEE_DOCTOR", "EMPLOYEE_MEDICAL_TECH")
 
-                .antMatchers("/user", "/user/{id}")
-                .hasAnyAuthority("ADMIN", "EMPLOYEE", "USER")
+                .antMatchers(HttpMethod.PUT,"/donations/{id}")
+                .hasAnyAuthority( "ADMIN","EMPLOYEE_DOCTOR")
+
+                .antMatchers(HttpMethod.POST,"/transfusionTable", "/bloodType")
+                .hasAnyAuthority( "ADMIN","EMPLOYEE_DOCTOR", "EMPLOYEE_MEDICAL_TECH")
+
+                .antMatchers(HttpMethod.POST,"/donations")
+                .hasAnyAuthority( "ADMIN","EMPLOYEE_DOCTOR")
+
+                .antMatchers(HttpMethod.DELETE,"/transfusionTable/{id}")
+                .hasAnyAuthority( "ADMIN","EMPLOYEE_DOCTOR")
+
+
+                .antMatchers(HttpMethod.GET, "/bloodType/**",
+                        "/donations/**",
+                        "/role/**",
+                        "/transfusionTable/**",
+                        "/user/username")
+                .hasAnyAuthority( "ADMIN","EMPLOYEE_DOCTOR","EMPLOYEE_MEDICAL_TECH", "EMPLOYEE_HOSPITAL_MANAG" , "USER")
+
+                .antMatchers(HttpMethod.GET,"/user/**")
+                .hasAnyAuthority( "ADMIN","EMPLOYEE_DOCTOR", "EMPLOYEE_HOSPITAL_MANAG","EMPLOYEE_MEDICAL_TECH" )
+
                 .antMatchers("/**")
                 .hasAuthority("ADMIN")
 

@@ -46,7 +46,11 @@ class TransfusionTableComponent extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://localhost:8080/transfusionTable')
+        axios.get('http://localhost:8080/transfusionTable', {
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem('access_token')
+            }
+    })
         .then (response=>{
             const transfuzije= response.data;
             this.setState({transfuzije});
@@ -64,7 +68,7 @@ class TransfusionTableComponent extends Component {
         }
     }
 
-    handleChangeHitno = (selectedOption) => {
+    handleChangeHitnost = (selectedOption) => {
         if (selectedOption) {
             this.setState({ hitnost: selectedOption.target.value });
         }
@@ -76,7 +80,11 @@ class TransfusionTableComponent extends Component {
     filterByTipKrvi(e) {
         e.preventDefault();
         if (this.state.tipKrvi!='') {
-            axios.get('http://localhost:8080/transfusionTable/transfusions/blood_type?bloodType='+this.state.tipKrvi).then(
+            axios.get('http://localhost:8080/transfusionTable/transfusions/blood_type?bloodType='+this.state.tipKrvi, {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem('access_token')
+                }
+        }).then(
             response => {
                 const transfuzije= response.data;
                 this.setState({transfuzije});
@@ -91,7 +99,11 @@ class TransfusionTableComponent extends Component {
 
     filterByHitnost(e) {
         e.preventDefault();
-        axios.get('http://localhost:8080/transfusionTable/transfusions/emergency?emergency='+this.state.hitnost).then(
+        axios.get('http://localhost:8080/transfusionTable/transfusions/emergency?emergency='+this.state.hitnost, {
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem('access_token')
+            }
+    }).then(
         response => {
             const transfuzije= response.data;
             this.setState({transfuzije});
@@ -104,7 +116,11 @@ class TransfusionTableComponent extends Component {
     filterByPotrebnomMjestu(e) {
         e.preventDefault();
         if (this.state.mjesto!='') {
-            axios.get('http://localhost:8080/transfusionTable/transfusions/place_of_needed_donation?place_of_needed_donation='+this.state.mjestoPotrebne).then(
+            axios.get('http://localhost:8080/transfusionTable/transfusions/place_of_needed_donation?place_of_needed_donation='+this.state.mjestoPotrebne, {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem('access_token')
+                }
+        }).then(
             response => {
                 const transfuzije= response.data;
                 this.setState({transfuzije});
@@ -140,7 +156,11 @@ class TransfusionTableComponent extends Component {
             emergency: this.state.NOVOemergency,
             bloodQuantityNeeded: this.state.NOVObloodQuantityNeeded,
             details: this.state.NOVOdetails
-        }).then(response => {
+        }, {
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem('access_token')
+            }
+    }).then(response => {
             if (response.status === 200 || response.status === 201) {
                 this.props.history.push('/')
                 alert('Uspješno izmijenjeni podaci')
@@ -149,6 +169,17 @@ class TransfusionTableComponent extends Component {
             console.log(err.response.data.message.toString())
         })
         this.setState({showMe:false});
+        axios.get('http://localhost:8080/transfusionTable', {
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem('access_token')
+            }
+    })
+        .then (response=>{
+            const transfuzije= response.data;
+            this.setState({transfuzije});
+            const transfuzijeSVE= response.data;
+            this.setState({transfuzijeSVE});           
+        })
     }
     render() {
         return ( 
@@ -185,7 +216,7 @@ class TransfusionTableComponent extends Component {
                     <input type="text" onChange={e => this.handleChange(e)} placeholder="Tip krvi" name="tipKrvi"/>
                     <button type="submit" onClick={e => this.filterByTipKrvi(e)}>Filtriraj po tipu krvi</button>
                     <br/>
-                    <select className="selectBox" onChange={(e) => {this.handleChangeHitno(e);}} value={this.state.hitnost} name="hitnost">
+                    <select className="selectBox" onChange={(e) => {this.handleChangeHitnost(e);}} value={this.state.hitnost} name="hitnost">
                         {this.state.hitno.map(h => <option key={h.value} value={h.value}>{h.label}</option>)}
                     </select>
                     <button type="submit" onClick={e => this.filterByHitnost(e)}>Filtriraj po hitnosti</button>

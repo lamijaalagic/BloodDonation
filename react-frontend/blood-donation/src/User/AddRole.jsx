@@ -36,7 +36,11 @@ class AddRole extends Component {
             
             axios.post('http://localhost:8080/role', {
                 roleName: this.state.roleName
-            }).then(response => {
+            }, {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem('access_token')
+                }
+        }).then(response => {
                 if (response.status === 200 || response.status === 201) {
                     this.props.history.push('/')
                     toast.success('Uspješno kreirana uloga', { position: toast.POSITION.TOP_RIGHT })

@@ -90,22 +90,36 @@ class AddUser extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://localhost:8080/role').then(
+        axios.get('http://localhost:8080/role', {
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem('access_token')
+            }
+    }).then(
             res => {
                 const uloga = res.data
                 this.setState({ uloga })
                 console.log(uloga);
+                if (this.state.uloga.length!=0) {
+                    this.setState({role:this.state.uloga[0]});
+                }
 
             }
         ).catch(err => {
             toast.error(err.response.data.message.toString(), { position: toast.POSITION.TOP_RIGHT })
         })
 
-        axios.get('http://localhost:8080/bloodType').then(
+        axios.get('http://localhost:8080/bloodType', {
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem('access_token')
+            }
+    }).then(
             res => {
                 const krvneGrupe = res.data
                 this.setState({ krvneGrupe })
                 console.log(this.state.krvneGrupe);
+                if (this.state.krvneGrupe.length!=0) {
+                    this.setState({odabranaKrvnaGrupa:this.state.krvneGrupe[0]});
+                }
 
             }
         ).catch(err => {
@@ -171,7 +185,11 @@ class AddUser extends Component {
                 phoneNumber:this.state.phoneNumber,
                 gender: this.state.gender,
                 donationNeeded: this.state.donationNeeded
-            }).then(response => {
+            }, {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem('access_token')
+                }
+        }).then(response => {
                 if (response.status === 200 || response.status === 201) {
                     this.props.history.push('/')
                     alert('Uspješno kreiran racun')
