@@ -70,6 +70,24 @@ public class DonationsController {
         }
     }
 
+    @GetMapping("/receiver")
+    public List<Donations> GetDonationsByReceiver (@RequestParam(name = "username") String username) {
+        try {
+            UserData receiver=userDataService.FindByUsername(username);
+            if (receiver!=null) {
+                return donationsService.FindByReceiver(receiver);
+            }
+            else return null;
+
+        }
+        catch (ResourceNotFoundException e) {
+            throw e;
+        }
+        catch (Exception e) {
+            throw new InternalServerException();
+        }
+    }
+
     @GetMapping("/donationPlace")
     public List<Donations> GetDonationByDonationPlace (@RequestParam(name = "donationPlace") String donationPlace) {
         try {

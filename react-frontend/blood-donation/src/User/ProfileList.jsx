@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, {Component} from 'react';
 import { toast } from 'react-toastify';
+import Moment from 'moment';
 
 class ProfileList extends Component {
 
@@ -28,7 +29,8 @@ class ProfileList extends Component {
                 {value: '', label: ''},
                 { value: 'A', label: 'A' },
                 { value: 'B', label: 'B' },
-                { value: 'AB', label: 'AB'}
+                { value: 'AB', label: 'AB'}, 
+                { value: '0', label: '0'}
             ],
             rh: [
                 {value: '', label: ''},
@@ -234,7 +236,7 @@ class ProfileList extends Component {
                             <td>{user.firstname}</td>
                             <td>{user.lastname} </td>
                             <td>{user.username}</td>
-                            <td>{user.birthDate}</td>
+                            <td>{Moment(user.birthDate).format('DD-MM-YYYY')}</td>
                             <td>{user.typeOfBlood.bloodType}{user.typeOfBlood.rhFactor ? '+':'-'}</td>
                             <td>{user.gender}</td>                                
                             <td>{user.phoneNumber}</td>

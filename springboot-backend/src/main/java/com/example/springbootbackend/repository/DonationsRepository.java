@@ -15,4 +15,5 @@ public interface DonationsRepository extends JpaRepository<Donations, Integer> {
     void deleteById(Integer id);
     List<Donations> findByDonationPlace(String donationPlace);
     List<Donations> findByUser(UserData user);
+    List<Donations> findByReceiver (UserData receiver);
 }

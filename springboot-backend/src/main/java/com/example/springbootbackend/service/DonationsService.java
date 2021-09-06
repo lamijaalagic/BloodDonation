@@ -42,6 +42,14 @@ public class DonationsService {
         return donations;
     }
 
+    public List<Donations> FindByReceiver(UserData receiver) {
+        List<Donations> donations=donationsRepository.findByReceiver(receiver);
+        if (donations==null) {
+            throw new BadRequestException("Ne postoji user koji je primio donaciju "+receiver.getUsername());
+        }
+        return donations;
+    }
+
     public List<Donations> FindByDonationPlace(String donationPlace) {
         List<Donations> donations=donationsRepository.findByDonationPlace(donationPlace);
         if (donations==null) {
@@ -60,6 +68,7 @@ public class DonationsService {
         Donations modifiedDonation=donationsRepository.findById(id)
                 .map(donations -> {
                     donations.setUser(newDonation.getUser());
+                    donations.setReceiver(newDonation.getReceiver());
                     donations.setDonationPlace(newDonation.getDonationPlace());
                     donations.setBloodQuantity(newDonation.getBloodQuantity());
                     donations.setDonationDate(newDonation.getDonationDate());

@@ -1,8 +1,9 @@
 import axios from 'axios';
 import React, {Component} from 'react';
-import * as moment from 'moment';
+import Moment from 'moment';
 import { toast } from 'react-toastify';
-import "./Transfusion.css"
+import "./Transfusion.css";
+import generateTransfusionPDF from './ReportTransfusion';
 
 class TransfusionTableComponent extends Component {
     constructor(props) {
@@ -30,19 +31,41 @@ class TransfusionTableComponent extends Component {
             NOVOplaceOfNeededDonation:'',
             NOVOemergency:false,
             NOVObloodQuantityNeeded:'',
-            NOVOdetails:''
-
+            NOVOdetails:'',
+            traziMjesec:0,
+            traziGodina:'',
+            poruka:'Izvjestaj',
+            mjesec: [
+                { value: '0', label: ''},
+                { value: '1', label: 'Januar' },
+                { value: '2', label: 'Februar' },
+                { value: '3', label: 'Mart' },
+                { value: '4', label: 'April' },
+                { value: '5', label: 'Maj' },
+                { value: '6', label: 'Juni' },
+                { value: '7', label: 'Juli' },
+                { value: '8', label: 'August' },
+                { value: '9', label: 'Septembar' },
+                { value: '10', label: 'Oktobar' },
+                { value: '11', label: 'Novembar' },
+                { value: '12', label: 'Decembar' }
+            ],
+            odDatuma:null,
+            doDatuma:null
         }
         this.handleChange = this.handleChange.bind(this)
+       
     }
 
     realizovanaTransfuzija (event, tranfuzija) {
         event.preventDefault();
+        
         if (localStorage.getItem('role')==="ADMIN") {
+            sessionStorage.setItem('primalac',tranfuzija.user.id);
+            sessionStorage.setItem('idt',tranfuzija.id);
             this.props.history.push('/admin/dodaj_donaciju');
         }
         else alert("Opcija omogućena samo za privilegovanog korisnika.");
-        //dodati dio ako zele donirati krv, potrebno napraviti u bazi tabelu, da bi admin mogao znati
     }
 
     componentDidMount() {
@@ -65,6 +88,12 @@ class TransfusionTableComponent extends Component {
         })
         if (event.target.value=="") {
             this.setState({transfuzije: this.state.transfuzijeSVE});
+        }
+    }
+
+    handleChangeMjesec = (selectedOption) => {
+        if (selectedOption) {
+            this.setState({ traziMjesec: selectedOption.target.value });
         }
     }
 
@@ -181,6 +210,37 @@ class TransfusionTableComponent extends Component {
             this.setState({transfuzijeSVE});           
         })
     }
+
+    kreirajIzvjestaj(e) {
+        e.preventDefault();
+        var di=[];
+        if (this.state.traziGodina!='' && this.state.traziMjesec!=0) {
+            for (let index = 0; index < this.state.transfuzijeSVE.length; index++) {
+                const element = this.state.transfuzijeSVE[index];
+                var datum=new Date(element.publishingDate)
+                if (datum.getFullYear()==this.state.traziGodina && datum.getMonth()==this.state.traziMjesec-1) {
+                    di.push(element);
+                }    
+            }
+            this.state.poruka="Mjesečni izvještaj transfuzija krvi za mjesec "+this.state.traziMjesec; 
+        }
+        else if (this.state.traziGodina!='') {
+            for (let index = 0; index < this.state.transfuzijeSVE.length; index++) {
+                const element = this.state.transfuzijeSVE[index];
+                var datum=new Date(element.publishingDate)
+                if (datum.getFullYear()==this.state.traziGodina) {
+                    di.push(element);
+                }    
+            }
+            this.state.poruka="Godišnji izvještaj transfuzija krvi za godinu "+this.state.traziGodina; 
+        }
+        else {
+            di=this.state.transfuzijeSVE;
+            this.state.poruka="Izvještaj svih transfuzija krvi.";
+        }
+        generateTransfusionPDF(di, this.state.poruka);
+    }
+
     render() {
         return ( 
             <div className="userView">
@@ -203,7 +263,7 @@ class TransfusionTableComponent extends Component {
                             <td><button className="tabelaButton" onClick={e => this.realizovanaTransfuzija(e,trans)}>Doniraj</button></td>
                             <td>{trans.bloodType.bloodType} {trans.bloodType.rhFactor ? '+':'-'}</td>
                             <td>{trans.placeOfNeededDonation}</td>
-                            <td>{trans.publishingDate}</td>
+                            <td>{Moment(trans.publishingDate).format('DD-MM-YYYY')}</td>
                             <td>{trans.emergency ? 'Da':'Ne'}</td>
                             <td>{trans.bloodQuantityNeeded}</td>                                
                             <td>{trans.details}</td>
@@ -226,6 +286,27 @@ class TransfusionTableComponent extends Component {
                     <br/>
                     <label style={{ color: "red" }}>{this.state.errorMessage}</label>
                 </div>
+
+                <div className="filteri">
+                    <label><b>IZVJEŠTAJ</b></label>
+                    <br/>
+                    <label>Kreiraj mjesečni/godišnji izvještaj</label>
+                    <br/>
+                    <label>Ukoliko želite godišnji izvještaj, odaberite godinu.</label>
+                    <br/>
+                    <label>Ukoliko želite mjesečni izvještaj odaberite i mjesec i godinu.</label>
+                    <br/>
+                    <div>
+                        <label>Izvještaj za mjesec: </label>
+                        <select className="selectBox" onChange={(e) => {this.handleChangeMjesec(e);}} value={this.state.traziMjesec} name="traziMjesec">
+                            {this.state.mjesec.map(m => <option key={m.value} value={m.value}>{m.label}</option>)}
+                        </select>
+                        <input className="loginInput"  type="number" onChange={e => this.handleChange(e)} placeholder="Izvještaj za godinu: " name="traziGodina" />
+                        <button className="loginButton" onClick={e => this.kreirajIzvjestaj(e)} type="submit">Kreiraj mjesečni/godišnji izvještaj</button>
+                    </div>
+                    
+                </div>
+
                 {this.state.showMe? 
                 <div >
                     <input className="loginInput" type="text" onChange={e => this.handleChange(e)} placeholder="Mjesto potrebne donacije" name="NOVOplaceOfNeededDonation"/>

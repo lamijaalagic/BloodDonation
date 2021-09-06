@@ -14,7 +14,8 @@ class AddDonation extends Component {
             bloodQuantity:'',
             odabrani:{},
             username:'',
-            errorMessage:''
+            errorMessage:'',
+            primalac:{}
         }
     }
 
@@ -43,7 +44,7 @@ class AddDonation extends Component {
             headers: {
                 Authorization: "Bearer " + localStorage.getItem('access_token')
             }
-    }).then(
+        }).then(
             res => {
                 const korisnici = res.data
                 this.setState({ korisnici })
@@ -53,17 +54,30 @@ class AddDonation extends Component {
         ).catch(err => {
             toast.error(err.response.data.message.toString(), { position: toast.POSITION.TOP_RIGHT })
         })
+        
+        axios.get('http://localhost:8080/user/username?username='+'NEREGISTROVAN', {
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem('access_token')
+            }
+        }).then(
+            res => {
+                const primalac = res.data
+                this.setState({ primalac })
+            }
+        ).catch(err => {
+            toast.error(err.response.data.message.toString(), { position: toast.POSITION.TOP_RIGHT })
+        })
+        console.log(this.state.primalac)
     }
 
     handleChangeKorisnici = (selectedOption) => {
         if (selectedOption) {
-            alert(selectedOption)
             const arrayelemnt = this.state.korisnici.filter(item => item.id == selectedOption.target.value)
             this.setState({
                 odabrani: arrayelemnt[0],
                 username:selectedOption.target.value
             });
-            console.log(this.state.odabrani);
+            //console.log(this.state.odabrani);
         }
     }
 
@@ -74,13 +88,22 @@ class AddDonation extends Component {
     }
 
     createDonation = (event) => {
-        console.log(this.state.odabrani)
+        //alert(sessionStorage.getItem('primalac'))
+        if (sessionStorage.getItem('primalac')!=null) {
+            var primalac_id=sessionStorage.getItem('primalac');
+            alert(primalac_id) 
+            this.state.korisnici.forEach(k => {
+                if (k.id==primalac_id) this.state.primalac=k;
+            });
+        }
         event.preventDefault();
+        console.log(this.state.primalac.toString())
         if (!this.validateForm()) toast.error("Unesite vrijednosti", { position: toast.POSITION.TOP_RIGHT })
         else {
             
             axios.post('http://localhost:8080/donations', {
                 user: this.state.odabrani,
+                receiver: this.state.primalac,
                 donationDate: this.state.donationDate,
                 donationPlace:this.state.donationPlace,
                 bloodQuantity:this.state.bloodQuantity
@@ -91,6 +114,11 @@ class AddDonation extends Component {
         }).then(response => {
                 if (response.status === 200 || response.status === 201) {
                     this.props.history.push('/')
+                    alert("Uspjesno dodana donacija.");
+                    if (sessionStorage.getItem('idt')!=null) {
+                        this.obrisi_transfuziju(sessionStorage.getItem('idt'));
+                        sessionStorage.clear();
+                    }
                     toast.success('Uspješno kreirana donacija', { position: toast.POSITION.TOP_RIGHT })
                 }
             }).catch(err => {
@@ -98,6 +126,23 @@ class AddDonation extends Component {
                 toast.error(err.response.data.message.toString(), { position: toast.POSITION.TOP_RIGHT })
             })
         }
+    }
+
+    obrisi_transfuziju(id) {
+        axios.delete('http://localhost:8080/transfusionTable/'+id, {
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem('access_token')
+            }
+    }).then (response =>{
+        if (response.status === 200 || response.status === 201) {
+            this.props.history.push('/')
+            alert("Uspjesno obrisana donirana transfuzija.");
+            toast.success('Uspješno kreirana donacija', { position: toast.POSITION.TOP_RIGHT })
+        }
+    }).catch(err => {
+        console.log(err.response.data.message.toString())
+        toast.error(err.response.data.message.toString(), { position: toast.POSITION.TOP_RIGHT })
+    })
     }
 
     render() {

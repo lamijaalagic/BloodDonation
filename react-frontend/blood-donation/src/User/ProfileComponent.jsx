@@ -2,7 +2,8 @@ import axios from 'axios';
 import React, {Component} from 'react';
 import crvena_kap from '../crvena_kap.png';
 import { toast } from 'react-toastify';
-import "./styleUser.css"
+import "./styleUser.css";
+import Moment from 'moment';
 
 class ProfileComponent extends Component {
 
@@ -81,15 +82,23 @@ class ProfileComponent extends Component {
                 if(i+1<duzina) i++;
             });
             datum=new Date(datum)
-            var month=0
-            if (this.state.gender==='Z')
-                month = datum.getMonth() + 4;
-            else {
-                month = datum.getMonth() + 3;
+            var month=0;
+            var year=0;
+            if (datum.getMonth()>7){
+                year=datum.getFullYear()+1;
             }
-            var day = datum.getDate()+1;
-            var year = datum.getFullYear();
-            this.state.nextDonationDate = year + '-' + month + '-' + day;
+            if (datum.getMonth()<=7){
+                year=datum.getFullYear();
+            }
+            console.log("trenutni datum:"+month+" "+day+" "+year)
+            if (this.state.gender==='Z') {
+                month=datum.getMonth()+4
+            }
+            if (this.state.gender==='M') {
+                month=datum.getMonth()+3
+            }
+            var day=datum.getDate();            
+            this.state.nextDonationDate = day + '-' + month+1 + '-' + year;
         })
     }
 
@@ -115,7 +124,7 @@ class ProfileComponent extends Component {
                 </div>
                 <div className="okvir">
                     <label><b>Datum rođenja: </b></label>
-                    <label>{this.state.userData.birthDate}</label>
+                    <label>{Moment(this.state.userData.birthDate).format('DD-MM-YYYY')}</label>
                     <br/>
                     <label><b>Spol: </b></label>
                     <label>{this.state.userData.gender}</label>

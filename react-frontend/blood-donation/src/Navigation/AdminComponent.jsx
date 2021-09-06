@@ -15,6 +15,13 @@ import AddBloodType from "../User/AddBloodType";
 
 
 class AdminComponent extends Component {
+
+    /*state = { DODAJtransfuziju:"bhxjnko"}
+    promijeniTransfuziju = (transfuzija) => {
+        this.setState({DODAJtransfuziju:transfuzija})
+    }*/
+
+
     render() {
         return ( 
             <Router>
@@ -23,14 +30,14 @@ class AdminComponent extends Component {
                     <Route path="/admin/profil" component={ProfileComponent} />
                     <Route path="/admin/lista_profila" component={ProfileList} />
                     <Route path="/admin/kreiraj_profil" component={AddUser}/>
-                    <Route path="/admin/transfuzije_krvi" component={TransfusionTableComponent} />
+                    <Route path="/admin/transfuzije_krvi" component={TransfusionTableComponent } />
                     <Route path="/admin/dodaj_transfuziju" component={AddTransfusion} />
                     <Route path="/admin/tablica_donacija" component={DonationTableComponent} />
                     <Route path="/admin/dodaj_donaciju" component={AddDonation} />
                     <Route path="/admin/dodaj_rolu" component={AddRole} />
                     <Route path="/admin/dodaj_grupu" component={AddBloodType} />
                     
-                    <a className="odjava" href="/">Odjava</a>
+                    <a className="odjava" href="/" >Odjava</a>
                 </div>
             </Router>
         )

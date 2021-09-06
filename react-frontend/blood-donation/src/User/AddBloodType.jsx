@@ -13,7 +13,8 @@ class AddBloodType extends Component {
             tipKrvi: [
                 { value: 'A', label: 'A' },
                 { value: 'B', label: 'B' },
-                { value: 'AB', label: 'AB'}
+                { value: 'AB', label: 'AB'},
+                { value: '0', label: '0'}
             ],
             rh: [
                 { value: true, label: '+' },
