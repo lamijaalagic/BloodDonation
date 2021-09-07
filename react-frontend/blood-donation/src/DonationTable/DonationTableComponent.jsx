@@ -4,6 +4,11 @@ import { toast } from 'react-toastify';
 import "./Donation.css";
 import Moment from 'moment';
 import generateDonationsPDF from './ReportDonations';
+import crvena_kap from '../crvena_kap.png';
+import filter from '../find.png';
+import promijeni from '../modify.png';
+import dodaj_novi from '../add.png';
+import prikazi_detalje from '../show_details.png';
 
 class DonationTableComponent extends Component {
 
@@ -200,7 +205,7 @@ class DonationTableComponent extends Component {
         generateDonationsPDF(di, this.state.poruka);
     }
 
-    kreirajPeriodicniIzvjestaj(e) {
+    /*kreirajPeriodicniIzvjestaj(e) {
         e.preventDefault();
         var di=[];
         if (this.state.odDatuma!=null && this.state.doDatuma!=null) {
@@ -220,12 +225,23 @@ class DonationTableComponent extends Component {
             this.state.poruka="Izvještaj svih realizovanih donacija krvi.";
         }
         generateDonationsPDF(di, this.state.poruka);
-    }
+
+        <br/>
+        <label>Izvjestaj za vremenski period od:</label>
+        <input className="loginInput"  type="date" onChange={e => this.handleChange(e)} placeholder="Od datuma" name="traziGodina" />
+        <label>do: </label>
+        <input className="loginInput"  type="date" onChange={e => this.handleChange(e)} placeholder="do datuma" name="traziGodina" />
+        <button className="loginButton" onClick={e => this.kreirajPeriodicniIzvjestaj(e)} type="submit">Kreiraj izvještaj za odabrani vremenski period</button>
+
+    }*/
 
     render() {
         return ( 
             <div className="userView">
+                <div className="naslov">
+                <img className="user_img" src={crvena_kap} alt="Crvena kap"/>
                 <h2>Tabela donacija</h2>
+                </div>
                 <div>
                     <table>
                         <tr>
@@ -246,7 +262,7 @@ class DonationTableComponent extends Component {
                             <td>{Moment(don.donationDate).format('DD-MM-YYYY')}</td>
                             <td>{don.donationPlace}</td>
                             <td>{don.bloodQuantity}</td>
-                            <td><button className="tabelaButton" onClick={e => this.uredi(e,don)}>Uredi</button></td>
+                            <td><button className="tabelaButton" onClick={e => this.uredi(e,don)}><img className="icons" src={promijeni}/>Uredi</button></td>
                             <td><button className="tabelaButton" onClick={e => this.prikazDonatora(e,don.user)}>Prikaži detalje o donatoru</button></td>
                             <td><button className="tabelaButton" onClick={e => this.prikazDonatora(e,don.receiver)}>Prikaži detalje o primaocu krvi</button></td>
                         </tr>)
@@ -254,24 +270,26 @@ class DonationTableComponent extends Component {
                     </table>
                 </div>
                 <div className="filteri">
+                <label><b><i>Filtriraj podatke u tabeli</i></b></label> 
+                <br/>
                     <input type="text" onChange={e => this.handleChange(e)} placeholder="Mjesto donacije" name="mjesto"/>
-                    <button type="submit" onClick={e => this.filterByMjesto(e)}>Filtriraj po mjestu</button>
+                    <button className="loginButton" type="submit" onClick={e => this.filterByMjesto(e)}><img className="icons" src={filter}/>Filtriraj po mjestu</button>
                     <br/>
                     <input type="text" onChange={e => this.handleChange(e)} placeholder="Username" name="filterUsername" />
-                    <button type="submit" onClick={e => this.filterByUser(e)}>Filtriraj po korisniku</button>
+                    <button className="loginButton" type="submit" onClick={e => this.filterByUser(e)}><img className="icons" src={filter}/>Filtriraj po korisniku</button>
                     <br/>
                     <label style={{ color: "red" }}>{this.state.errorMessage}</label>                    
                 </div>
                 <div className="filteri">
-                    <label><b>IZVJEŠTAJ</b></label>
+                    <div >
+                    <label><b><i>Kreiraj izvještaj</i></b></label>
                     <br/>
-                    <label>Kreiraj mjesečni/godišnji izvještaj</label>
-                    <br/>
-                    <label>Ukoliko želite godišnji izvještaj, odaberite godinu.</label>
-                    <br/>
-                    <label>Ukoliko želite mjesečni izvještaj odaberite i mjesec i godinu.</label>
-                    <br/>
-                    <div>
+                    <p>Kreiraj mjesečni/godišnji izvještaj<br/>
+                        Ukoliko želite godišnji izvještaj, odaberite godinu.<br/>
+                        Ukoliko želite mjesečni izvještaj odaberite i mjesec i godinu.
+                    </p>
+                    </div>
+                    <div >
                         <label>Izvještaj za mjesec: </label>
                         <select className="selectBox" onChange={(e) => {this.handleChangeMjesec(e);}} value={this.state.traziMjesec} name="traziMjesec">
                             {this.state.mjesec.map(m => <option key={m.value} value={m.value}>{m.label}</option>)}
@@ -279,30 +297,30 @@ class DonationTableComponent extends Component {
                         <input className="loginInput"  type="number" onChange={e => this.handleChange(e)} placeholder="Izvještaj za godinu: " name="traziGodina" />
                         <button className="loginButton" onClick={e => this.kreirajIzvjestaj(e)} type="submit">Kreiraj mjesečni/godišnji izvještaj</button>
 
-                        <br/>
-                        <label>Izvjestaj za vremenski period od:</label>
-                        <input className="loginInput"  type="date" onChange={e => this.handleChange(e)} placeholder="Od datuma" name="traziGodina" />
-                        <label>do: </label>
-                        <input className="loginInput"  type="date" onChange={e => this.handleChange(e)} placeholder="do datuma" name="traziGodina" />
-                        <button className="loginButton" onClick={e => this.kreirajPeriodicniIzvjestaj(e)} type="submit">Kreiraj izvještaj za odabrani vremenski period</button>
-
                     </div>
                     
                 </div>
 
                 {this.state.showMe? 
-                <div >
+                <div className="filteri">
+                    <label><b><i>Izmijeni podatke odabrane donacije</i></b></label>
+                    <br/>
                     <input className="loginInput" type="text" onChange={e => this.handleChange(e)} placeholder="Mjesto donacije" name="NOVOdonationPlace"/>
                     <br/>
                     <input className="loginInput" type="number" onChange={e => this.handleChange(e)} placeholder="Kolicina doza krvi" name="NOVObloodQuantity" />
                     <br/>
-                    <button className="loginButton" onClick={e => {this.setState({showMe:false});}} type="submit"> Nazad</button>
-                    <button className="loginButton" onClick={e => this.modifikujPodatke(e)} type="submit"> Promijeni podatke</button>
+                    <button className="backButton" onClick={e => {this.setState({showMe:false});}} type="submit"> Nazad</button>
+                    <button className="okButton" onClick={e => this.modifikujPodatke(e)} type="submit"> Promijeni podatke</button>
                 </div>
                  :null}
 
                 {this.state.showDonator? 
-                <div >
+                <div className="filteri">
+                    <img className="icons" src={prikazi_detalje}/>
+                    <label><b><i>Detaljni prikaz podataka odabranog korisnika</i></b></label>
+                    
+                    <br/>
+                    <br/>
                     <label><b>Ime i prezime: </b></label>
                     <label>{this.state.donatorODABRANI.firstname}</label>
                     <label>{this.state.donatorODABRANI.lastname}</label>
@@ -313,7 +331,7 @@ class DonationTableComponent extends Component {
                     
                 <br/>
                     <label><b>Datum rođenja: </b></label>
-                    <label>{this.state.donatorODABRANI.birthDate}</label>
+                    <label>{Moment(this.state.donatorODABRANI.birthDate).format('DD-MM-YYYY')}</label>
                 <br/>
                     <label><b>Spol: </b></label>
                     <label>{this.state.donatorODABRANI.gender}</label>
@@ -337,7 +355,7 @@ class DonationTableComponent extends Component {
                     <label><b>Username: </b></label>
                     <label>{this.state.donatorODABRANI.username}</label>
                 <br/>
-                    <button className="loginButton" onClick={e => {this.setState({showDonator:false});}} type="submit"> Nazad</button>
+                    <button className="backButton" onClick={e => {this.setState({showDonator:false});}} type="submit"> Nazad</button>
                 </div>
                  :null}
             </div>

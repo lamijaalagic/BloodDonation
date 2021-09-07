@@ -15,7 +15,7 @@ class UserComponent extends Component {
                     <Route path="/user/profil" component={ProfileComponent} />
                     <Route path="/user/transfuzije_krvi" component={TransfusionTableComponent} />
                     <Route path="/user/tablica_donacija" component={DonationTableComponent} />
-                    <a className="odjavaLink" href="/">Odjava</a>
+                    <a className="odjava" href="/login" >Odjava</a>
                 </div>
             </Router>
         )

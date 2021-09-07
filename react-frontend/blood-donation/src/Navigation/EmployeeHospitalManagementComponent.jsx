@@ -17,7 +17,7 @@ class EmployeeHospitalManagementComponent extends Component {
                     <Route path="/employeeHospitalManagement/lista_profila" component={ProfileList} />
                     <Route path="/employeeHospitalManagement/transfuzije_krvi" component={TransfusionTableComponent} />
                     <Route path="/employeeHospitalManagement/tablica_donacija" component={DonationTableComponent} />
-                    <a className="odjavaLink" href="/">Odjava</a>
+                    <a className="odjava" href="/login" >Odjava</a>
                 </div>
             </Router>
         )

@@ -1,7 +1,8 @@
 import axios from 'axios';
 import React, {Component} from 'react';
 import { toast } from 'react-toastify';
-
+import dodaj_novi from '../add.png';
+import crvena_kap from '../crvena_kap.png';
 
 class AddDonation extends Component {
 
@@ -149,7 +150,8 @@ class AddDonation extends Component {
         return (
             <div className="userDiv">
                 <form className="registerForma">
-                    <h2>Dodaj novu donaciju</h2>
+                <img className="user_img" src={crvena_kap} alt="Crvena kap"/>
+                    <h2> Dodaj novu donaciju</h2>
                     <div className="inputGroup">
                         <label>Datum donacije: </label>
                         <input className="loginInput" type="date" onChange={e => this.handleChange(e)} placeholder="Datum doniranja" name="donationDate"/>
@@ -160,7 +162,6 @@ class AddDonation extends Component {
                     </div>
                     <div className="selectWrapper">
                         <label>Krv je donirao (username):</label>
-                        <br/>
                         <select className="selectBox" onChange={(e) => {this.handleChangeKorisnici(e);}} value={this.state.username} name="username" >
                             {this.state.korisnici.map(kor => <option key={kor.id} value={kor.id}>{kor.username}</option>)}
                         </select>
@@ -168,7 +169,7 @@ class AddDonation extends Component {
                     <div>
                         <label style={{ color: "red" }}>{this.state.errorMessage}</label>
                         <br/>
-                        <button className="loginButton" onClick={e => this.createDonation(e)} type="submit"> Dodaj donaciju</button>
+                        <button className="okButton" onClick={e => this.createDonation(e)} type="submit"><img className="icons" src={dodaj_novi}/>  Dodaj donaciju</button>
                     </div>
                 </form>
             </div>

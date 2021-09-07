@@ -3,7 +3,8 @@ import "./LoginComponent.css";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import LocalStorageService from '../LocalStorage.js';
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
+import crvena_kap from '../crvena_kap.png';
 
 class LoginComponent extends Component {
 
@@ -20,6 +21,10 @@ class LoginComponent extends Component {
 
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+    }
+
+    componentDidMount() {
+        localStorage.clear();
     }
 
     handleChange(event) {
@@ -82,7 +87,9 @@ class LoginComponent extends Component {
     render() {
         return (
             <div className="frame">
+                
                 <div className="header">
+                <img className="user_img" src={crvena_kap} alt="Crvena kap"/>
                     <h1>Blood donation</h1>
                     <h2>Unesite podatke</h2>
                 </div>
@@ -93,7 +100,9 @@ class LoginComponent extends Component {
                     <br/>
                     <label style={{ color: "red" }}>{this.state.errorMessage}</label>
                     <br/>
-                    <input className="submit-btn" type="submit" value="Login" />
+                    <button className="submit-btn" type="submit">Login</button>
+                    <br/>
+                    <button className="back-btn"  onClick={(e)=>{e.preventDefault(); this.props.history.push('/');}}>Nazad na naslovnu stranicu</button>
                 </form>
             </div>
         )

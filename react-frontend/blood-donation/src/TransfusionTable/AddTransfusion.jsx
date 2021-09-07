@@ -1,7 +1,8 @@
 import axios from 'axios';
 import React, {Component} from 'react';
 import { toast } from 'react-toastify';
-
+import dodaj_novi from '../add.png';
+import crvena_kap from '../crvena_kap.png';
 
 class AddTransfusion extends Component {
 
@@ -131,6 +132,7 @@ class AddTransfusion extends Component {
         return (
             <div className="userDiv">
                 <form className="registerForma">
+                <img className="user_img" src={crvena_kap} alt="Crvena kap"/>
                     <h2>Dodaj novu transfuziju</h2>
                     <div className="inputGroup">
                         <input className="loginInput" type="text" onChange={e => this.handleChange(e)} placeholder="Mjesto potrebne donacije" name="placeOfNeededDonation"/>
@@ -160,7 +162,7 @@ class AddTransfusion extends Component {
                     <div>
                         <label style={{ color: "red" }}>{this.state.errorMessage}</label>
                         <br/>
-                        <button className="loginButton" onClick={e => this.createTransfusion(e)} type="submit"> Kreiraj transfuziju</button>
+                        <button className="okButton" onClick={e => this.createTransfusion(e)} type="submit"> <img className="icons" src={dodaj_novi}/> Kreiraj transfuziju</button>
                     </div>
                 </form>
             </div>

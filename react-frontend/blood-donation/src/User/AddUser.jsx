@@ -2,6 +2,12 @@ import axios from "axios";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import dodaj_novi from '../add.png';
+import crvena_kap from '../crvena_kap.png';
+import filter from '../find.png';
+import promijeni from '../modify.png';
+import prikazi_detalje from '../show_details.png';
+import novi_user from '../user-add-icon.png'
 
 
 class AddUser extends Component {
@@ -206,11 +212,14 @@ class AddUser extends Component {
         return (
             <div className="userDiv">
                 <form className="registerForma">
+                
+                <img className="icon_image" src={novi_user}/>
                     <h2>Kreiraj novog korisnika</h2>
                     <div className="inputGroup">
                         <input className="loginInput" type="text" onChange={e => this.handleChange(e)} placeholder="Ime" name="firstname"/>
                         <input className="loginInput" type="text" onChange={e => this.handleChange(e)} placeholder="Prezime" name="lastname"/>
                         <br/>
+                        <label>Datum rođenja: </label>
                         <input className="loginInput" type="date" onChange={e => this.handleChange(e)} placeholder="Datum rodjenja" name="birthDate" />
                     </div>
                     <div className="inputGroup">
@@ -226,16 +235,16 @@ class AddUser extends Component {
                     <div className="inputGroup">
                      
                     <div className="selectWrapper">
-                        <label>Krvna grupa</label>
-                        <br/>
+                        <label>Krvna grupa: </label>
                         <select className="selectBox" onChange={(e) => {this.handleChangeTipKrvi(e);}} value={this.state.KG} name="KG">
                             {this.state.krvneGrupe.map(grupa => <option key={grupa.id} value={grupa.id} >{grupa.bloodType}{grupa.rhFactor ? '+':'-'}</option>)}
                         </select>
-                        <button className="loginButton"> <Link className="openLogin" to="/admin/dodaj_grupu">Dodaj krvnu grupu.</Link> </button>
+                        <button className="loginButton"> <Link className="openLogin" to="/admin/dodaj_grupu">Dodaj krvnu grupu</Link> </button>
                     </div>
 
                     </div>
                     <div className="selectWrapper">
+                        <label>Spol: </label>
                         <select className="selectBox" onChange={(e) => {this.handleChangeSpol(e);}} value={this.state.gender} name="gender">
                             {this.state.spol.map(spol => <option key={spol.value} value={spol.value}>{spol.label}</option>)}
                         </select>
@@ -243,7 +252,6 @@ class AddUser extends Component {
 
                     <div className="selectWrapper">
                         <label>Korisniku je potrebna donacija krvi</label>
-                        <br/>
                         <select className="selectBox" onChange={(e) => {this.handleChangePotrebnaDonacija(e);}} value={this.state.donationNeeded} name="donationNeeded">
                             {this.state.potrebnaDonacija.map(potrebnaDonacija => <option key={potrebnaDonacija.value} value={potrebnaDonacija.value}>{potrebnaDonacija.label}</option>)}
                         </select>
@@ -251,7 +259,6 @@ class AddUser extends Component {
 
                     <div className="selectWrapper">
                         <label>Korisniku se dodjeljuje : </label>
-                        <br/>
                         <select className="selectBox" onChange={(e) => {this.handleChangeUloga(e);}} value={this.state.roleName} name="roleName">
                             {this.state.uloga.map(uloga => <option key={uloga.roleName} value={uloga.roleName}>{uloga.roleName}</option>)}
                         </select>
@@ -259,7 +266,7 @@ class AddUser extends Component {
                     <div>
                         <label style={{ color: "red" }}>{this.state.errorMessage}</label>
                         <br/>
-                        <button className="loginButton" onClick={e => this.createUser(e)} type="submit"> Kreiraj korisnika</button>
+                        <button className="okButton" onClick={e => this.createUser(e)} type="submit"> <img className="icons" src={dodaj_novi}/> Kreiraj korisnika</button>
                     </div>
                 </form>
             </div>

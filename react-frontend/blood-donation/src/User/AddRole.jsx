@@ -1,7 +1,8 @@
 import axios from 'axios';
 import React, {Component} from 'react';
 import { toast } from 'react-toastify';
-
+import dodaj_novi from '../add.png';
+import novi_user from '../user-add-icon.png'
 
 class AddRole extends Component {
 
@@ -56,6 +57,7 @@ class AddRole extends Component {
         return (
             <div className="userDiv">
                 <form className="registerForma">
+                <img className="icon_image" src={novi_user}/>
                     <h2>Dodaj novu ulogu</h2>
                     <div className="inputGroup">
                         <input className="loginInput" type="text" onChange={e => this.handleChange(e)} placeholder="Uloga korisnika" name="roleName"/>
@@ -63,7 +65,7 @@ class AddRole extends Component {
                     <div>
                         <label style={{ color: "red" }}>{this.state.errorMessage}</label>
                         <br/>
-                        <button className="loginButton" onClick={e => this.createRole(e)} type="submit"> Kreiraj ulogu</button>
+                        <button className="okButton" onClick={e => this.createRole(e)} type="submit"> <img className="icons" src={dodaj_novi}/> Kreiraj ulogu</button>
                     </div>
                 </form>
             </div>

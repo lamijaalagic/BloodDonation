@@ -23,7 +23,7 @@ class EmployeeDoctorComponent extends Component {
                     <Route path="/employeeDoctor/dodaj_transfuziju" component={AddTransfusion} />
                     <Route path="/employeeDoctor/dodaj_donaciju" component={AddDonation} />
                     <Route path="/employeeDoctor/dodaj_grupu" component={AddBloodType} />
-                    <a className="odjavaLink" href="/" >Odjava</a>
+                    <a className="odjava" href="/login" >Odjava</a>
                 </div>
             </Router>
         )

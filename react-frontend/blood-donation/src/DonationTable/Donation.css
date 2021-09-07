@@ -7,7 +7,7 @@
 
 .userDiv{
   width: 100%;
-  min-height: 550px;
+  min-height: 500px;
   justify-content: space-between;
   padding: 5px;
   background-color: rgb(211, 209, 209);
@@ -19,39 +19,101 @@ input {
   border: 2px solid gray;
   border-radius: 8px;
   height: 30px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+h2, label {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+p {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  color: gray;
+  font-style: italic;
+  font-size: 13px;
 }
 
 button {
     border-radius: 8px;
-    width: 30%;
-    height: 30px;
-    font-size: 14px;
-    color: white;
-    background-color:rgb(172, 22, 22);
-    border: 2px solid gray;
+    width: 300px;
+    min-height: 30px;
+    font-size: 16px;
+    
     transition-duration: 0.4s;
-    font-weight: bold;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    margin: 3px;
   }
   
+  .loginButton{
+    color: rgb(172, 22, 22);
+    background-color:rgb(151, 150, 150);
+    border: 2px solid gray;
+  }
+
+  .tabelaButton {
+    color: white;
+    background-color: rgb(172, 22, 22);
+    border: 2px solid gray;
+  }
+
   button:hover {
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
   }
 
+  .okButton{
+    background-color: rgb(69, 69, 137);
+    color: white;
+    border: 2px solid gray;
+  }
+
+  .backButton{
+    background-color: rgb(172, 22, 22);
+    color: white;
+    border: 2px solid gray;
+  }
+
+  
+
 .selectBox {
-  width: 30%;
+  width: 250px;
   height: 30px;
   text-align: center;
   background-color: rgb(214, 212, 212);
   margin: 5px;
   border-radius: 4px;
+  font-size: 16px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 .filteri {
   text-align: left;
   justify-content: left;
   padding: 14px 16px;
+  border-radius: 4px;
+  border: 1px solid gray;
+  width: fit-content;
+  margin: 5px;
+}
+
+.popup {
+  padding: 14px 16px;
+  border-radius: 4px;
+  border: 1px solid gray;
+  width: fit-content;
+  margin: 5px;
 }
 
 .userView{
   min-height: 350px;
+}
+
+.izvjestaj{
+  width: fit-content;
+  height: fit-content;
+  float: left;
+}
+
+.icon_image{
+  width: 30px;
+  height: 30px;
 }

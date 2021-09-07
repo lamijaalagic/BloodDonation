@@ -2,6 +2,11 @@ import axios from 'axios';
 import React, {Component} from 'react';
 import { toast } from 'react-toastify';
 import Moment from 'moment';
+import user_grupa from '../user_group.png';
+import crvena_kap from '../crvena_kap.png';
+import filter from '../find.png';
+import promijeni from '../modify.png';
+
 
 class ProfileList extends Component {
 
@@ -211,7 +216,9 @@ class ProfileList extends Component {
     render() {
         return ( 
             <div className="userView">
-                <h2>Lista korisnika</h2>
+                <img className="sl" src={user_grupa}/>
+                <img className="user_img" src={crvena_kap} alt="Crvena kap"/>
+                <h2> Lista korisnika</h2>
                 <div>
                     <table>
                         <tr>
@@ -245,27 +252,32 @@ class ProfileList extends Component {
                             <td>{user.donationNeeded ? 'Da':'Ne'}</td>
                             <td>{user.email}</td>
                             <td>{user.role.roleName}</td>
-                            <td><button className="tabelaButton" onClick={(e) => this.uredi(e,user)}>Uredi</button></td>
+                            <td><button className="tabelaButton" onClick={(e) => this.uredi(e,user)}> <img className="icons" src={promijeni}/>Uredi</button></td>
                         </tr>)
 })}
                     </table>
                 </div>
                 <div className="filteri">
+                    <label><b><i>Filtriraj podatke u tabeli</i></b></label> 
+                    
+                    <br/>
                     <select className="selectBox" onChange={(e) => {this.handleChangeTipKrvi(e);}} value={this.state.blood} name="blood">
                         {this.state.tipKrvi.map(tipKrvi => <option key={tipKrvi.value} value={tipKrvi.value}>{tipKrvi.label}</option>)}
                     </select>
                     <select className="selectBox" onChange={(e) => {this.handleChangeRh(e);}} value={this.state.rhF} name="rhF">
                         {this.state.rh.map(rh => <option key={rh.value} value={rh.value}>{rh.label}</option>)}
                     </select> 
-                    <button type="submit" onClick={e => this.filterByTipKrvi(e)}>Filtriraj po tipu krvi</button>
+                    <button className="loginButton" type="submit" onClick={e => this.filterByTipKrvi(e)}> <img className="icons" src={filter}/>Filtriraj po tipu krvi</button>
                     <br/>
                     <input type="text" onChange={e => this.handleChange(e)} placeholder="Username korisnika" name="korisnik" />
-                    <button type="submit" onClick={e => this.filterByUsername(e)}>Filtriraj po username-u</button>
+                    <button className="loginButton" type="submit" onClick={e => this.filterByUsername(e)}> <img className="icons" src={filter}/>Filtriraj po username-u</button>
                     <br/>
                     <label style={{ color: "red" }}>{this.state.errorMessage}</label>
                 </div>
                 {this.state.showMe? 
-                <div >
+                <div className="popup">
+                    <label><b><i>Izmijeni podatke odabranog korisnika</i></b></label> 
+                    <br/>
                     <input className="loginInput" type="text" onChange={e => this.handleChange(e)} placeholder="Prezime" name="NOVOlastname"/>
                     <br/>
                     <input className="loginInput" type="password" onChange={e => this.handleChange(e)} placeholder="Password" name="NOVOpassword" />
@@ -283,8 +295,8 @@ class ProfileList extends Component {
                         {this.state.potrebnaDonacija.map(potrebnaDonacija => <option key={potrebnaDonacija.value} value={potrebnaDonacija.value}>{potrebnaDonacija.label}</option>)}
                     </select>
                     <br/>
-                    <button className="loginButton" onClick={e => {this.setState({showMe:false});}} type="submit"> Nazad</button>
-                    <button className="loginButton" onClick={e => this.modifikujPodatke(e)} type="submit"> Promijeni podatke</button>
+                    <button className="backButton" onClick={e => {this.setState({showMe:false});}} type="submit"> Nazad</button>
+                    <button className="okButton" onClick={e => this.modifikujPodatke(e)} type="submit"> Promijeni podatke</button>
                 </div>
                  :null}
             </div>

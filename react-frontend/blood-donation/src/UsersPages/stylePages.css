@@ -19,12 +19,15 @@ li, .dropbtn {
   text-align: center;
   padding: 12px 14px;
   text-decoration: none;
+  font-size: 16px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 
 li:hover, .dropdown:hover .dropbtn {
   background-color: rgb(196, 72, 72);
   text-decoration: none;
+  font-size: large;
 }
 
 li.dropdown {

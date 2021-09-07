@@ -1,3 +1,4 @@
+
 .frame {
     display: flex;
     justify-content: space-between;
@@ -22,15 +23,16 @@ form{
 
 input {
     width: 250px;
-    font-size: 14px;
+    font-size: 16px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 .submit-btn{
    
     border-radius: 8px;
     width: 200px;
-    height: 30px;
-    font-size: 14px;
+    min-height: 30px;
+    font-size: 16px;
     background-color: white;
     color: black;
     border: 2px solid rgb(196, 72, 72);
@@ -39,5 +41,23 @@ input {
   
   .submit-btn:hover {
     background-color: rgb(196, 72, 72);
-    color: rgb(196, 72, 72);
+    color: white;
+  }
+
+
+.back-btn{
+   
+    border-radius: 8px;
+    width: 200px;
+    min-height: 30px;
+    font-size: 16px;
+    background-color: white;
+    color: black;
+    border: 2px solid rgb(151, 150, 150);
+    transition-duration: 0.4s;
+  }
+  
+  .back-btn:hover {
+    background-color: rgb(151, 150, 150);
+    color: white;
   }

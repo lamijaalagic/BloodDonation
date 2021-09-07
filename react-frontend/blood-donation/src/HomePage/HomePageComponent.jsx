@@ -24,8 +24,14 @@ class HomePageComponent extends Component {
         return (
             <div className="frame">
                 <div className="header">
-                    <p>Federalna bolnica +387 33 123 456</p>
-                    <h1>Doniranje krvi u Bosni i Hercegovini</h1>
+                    <div className="headerFrame">
+                        <img className="kap_img" src={crvena_kap} alt="Crvena kap"/>
+                    </div>
+                    <div className="headerFrame">
+                        <p>Federalna bolnica +387 33 123 456</p>
+                        <h1>Doniranje krvi u Bosni i Hercegovini</h1>
+                    </div>
+                    
                 </div>
                 <div className="frameRow">
                 <div className="lijevi">
@@ -50,7 +56,7 @@ class HomePageComponent extends Component {
                     
                     <button className="Login"> <Link className="openLogin" to="/login">Login</Link></button>
                     <br></br>
-                    <img src={crvena_kap} alt="Crvena kap"/>
+                    
                 </div>
                 </div>
             </div>

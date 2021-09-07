@@ -3,19 +3,27 @@
     justify-content: space-between;
     flex-direction: column;
     background-color:white;
+    font-family: Georgia, 'Times New Roman', Times, serif;
 }
+
 .header{
     margin: 20pt;
     position: top;
     float: left;
     color: rgb(172, 22, 22);
     font-style: italic;
+    font-family: Georgia, 'Times New Roman', Times, serif;
 }
     h1{
         text-transform: uppercase;
         font-style: normal;
     }
 
+    .headerFrame{
+        float: left;
+        width: max-content;
+        height: fit-content;
+    }
 
 .frameRow {
     flex-direction: row;
@@ -28,7 +36,7 @@
     width: 30%;
     padding: 1.2em;
     text-align: left;
-    
+    justify-content: space-between;
 }
 
 .sredina{
@@ -43,40 +51,57 @@
     width: 20%;
     height: 100%;
     float: left;
-    background-color: rgb(179, 179, 179);
+    background-color: white;
     text-align: justify;
     padding: 1.2em;
 }
-img {
-    width: fit-content;
-    height: 50%;
+.kap_img {
+    width: 30%;
+    height: 20%;
     position: relative;
     display: inline-block;
-    margin: 7px;
-    
+    margin: 7px; 
 }
+
+@media (prefers-reduced-motion: no-preference) {
+    .kap_img {
+      animation: App-logo-spin infinite 3s linear;
+    }
+  }
+
+@keyframes App-logo-spin {
+    from {
+      transform: scaleY(0.1);
+    }
+    to {
+      transform: scaleY(1);
+    }
+  }
 
 .ListaButtona{
     width: 90%;
     height: 5em;
-    font-size: 14px;
+    font-size: 16px;
     border-radius: 4px;
     font-weight: bold;
     color: white;
     background-color:rgb(172, 22, 22);
+    font-family: Georgia, 'Times New Roman', Times, serif;
+
 }
 
 .Login {
     border-radius: 8px;
     width: 30%;
     height: 30px;
-    font-size: 14px;
+    font-size: 16px;
     color: white;
     background-color:rgb(172, 22, 22);
     border: 2px solid rgb(172, 22, 22);
     transition-duration: 0.4s;
     float: right;
-    font-weight: bold;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    margin: 5px;
   }
   
   .Login:hover {
@@ -86,4 +111,5 @@ img {
   .openLogin {
       color: white;
       text-decoration: none;
+      font-weight: normal;
   }

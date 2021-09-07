@@ -4,6 +4,12 @@ import Moment from 'moment';
 import { toast } from 'react-toastify';
 import "./Transfusion.css";
 import generateTransfusionPDF from './ReportTransfusion';
+import crvena_kap from '../crvena_kap.png';
+import filter from '../find.png';
+import promijeni from '../modify.png';
+import dodaj_novi from '../add.png';
+import prikazi_detalje from '../show_details.png';
+
 
 class TransfusionTableComponent extends Component {
     constructor(props) {
@@ -64,6 +70,11 @@ class TransfusionTableComponent extends Component {
             sessionStorage.setItem('primalac',tranfuzija.user.id);
             sessionStorage.setItem('idt',tranfuzija.id);
             this.props.history.push('/admin/dodaj_donaciju');
+        }
+        else if (localStorage.getItem('role')==="EMPLOYEE_DOCTOR") {
+            sessionStorage.setItem('primalac',tranfuzija.user.id);
+            sessionStorage.setItem('idt',tranfuzija.id);
+            this.props.history.push('/employeeDoctor/dodaj_donaciju');
         }
         else alert("Opcija omogućena samo za privilegovanog korisnika.");
     }
@@ -244,7 +255,8 @@ class TransfusionTableComponent extends Component {
     render() {
         return ( 
             <div className="userView">
-                <h2>Tabela transfuzija</h2>
+                <img className="user_img" src={crvena_kap} alt="Crvena kap"/>
+                <h2>Tabela potrebnih transfuzija krvi</h2>
                 <div>
                     <table>
                         <tr>
@@ -267,35 +279,37 @@ class TransfusionTableComponent extends Component {
                             <td>{trans.emergency ? 'Da':'Ne'}</td>
                             <td>{trans.bloodQuantityNeeded}</td>                                
                             <td>{trans.details}</td>
-                            <td><button className="tabelaButton" onClick={e => this.uredi(e,trans)}>Uredi</button></td>
+                            <td><button className="tabelaButton" onClick={e => this.uredi(e,trans)}><img className="icons" src={promijeni}/>Uredi</button></td>
                         </tr>)
 })}
                     </table>
                 </div>
                 <div className="filteri">
+                    <label><b><i>Filtriraj podatke u tabeli</i></b></label>
+                    <br/>
                     <input type="text" onChange={e => this.handleChange(e)} placeholder="Tip krvi" name="tipKrvi"/>
-                    <button type="submit" onClick={e => this.filterByTipKrvi(e)}>Filtriraj po tipu krvi</button>
+                    <button  className="loginButton" type="submit" onClick={e => this.filterByTipKrvi(e)}><img className="icons" src={filter}/>Filtriraj po tipu krvi</button>
                     <br/>
                     <select className="selectBox" onChange={(e) => {this.handleChangeHitnost(e);}} value={this.state.hitnost} name="hitnost">
                         {this.state.hitno.map(h => <option key={h.value} value={h.value}>{h.label}</option>)}
                     </select>
-                    <button type="submit" onClick={e => this.filterByHitnost(e)}>Filtriraj po hitnosti</button>
+                    <button  className="loginButton" type="submit" onClick={e => this.filterByHitnost(e)}><img className="icons" src={filter}/>Filtriraj po hitnosti</button>
                     <br/>
                     <input type="text" onChange={e => this.handleChange(e)} placeholder="Mjesto potrebne transfuzije" name="mjestoPotrebne" />
-                    <button type="submit" onClick={e => this.filterByPotrebnomMjestu(e)}>Filtriraj po mjestu potrebne transfuzije</button>
+                    <button  className="loginButton" type="submit" onClick={e => this.filterByPotrebnomMjestu(e)}><img className="icons" src={filter}/>Filtriraj po mjestu potrebne transfuzije</button>
                     <br/>
                     <label style={{ color: "red" }}>{this.state.errorMessage}</label>
                 </div>
 
                 <div className="filteri">
-                    <label><b>IZVJEŠTAJ</b></label>
-                    <br/>
-                    <label>Kreiraj mjesečni/godišnji izvještaj</label>
-                    <br/>
-                    <label>Ukoliko želite godišnji izvještaj, odaberite godinu.</label>
-                    <br/>
-                    <label>Ukoliko želite mjesečni izvještaj odaberite i mjesec i godinu.</label>
-                    <br/>
+                    <div >
+                        <label><b><i>Kreiraj izvještaj</i></b></label>
+                        <br/>
+                        <p>Kreiraj mjesečni/godišnji izvještaj<br/>
+                            Ukoliko želite godišnji izvještaj, odaberite godinu.<br/>
+                            Ukoliko želite mjesečni izvještaj odaberite i mjesec i godinu.
+                        </p>
+                    </div>
                     <div>
                         <label>Izvještaj za mjesec: </label>
                         <select className="selectBox" onChange={(e) => {this.handleChangeMjesec(e);}} value={this.state.traziMjesec} name="traziMjesec">
@@ -308,7 +322,9 @@ class TransfusionTableComponent extends Component {
                 </div>
 
                 {this.state.showMe? 
-                <div >
+                <div className="filteri">
+                    <label><b><i>Izmijeni podatke odabrane transfuzije</i></b></label>
+                        <br/>
                     <input className="loginInput" type="text" onChange={e => this.handleChange(e)} placeholder="Mjesto potrebne donacije" name="NOVOplaceOfNeededDonation"/>
                         <br/>
                         <input className="loginInput" type="number" onChange={e => this.handleChange(e)} placeholder="Kolicina potrebnih doza krvi" name="NOVObloodQuantityNeeded" />
@@ -320,8 +336,8 @@ class TransfusionTableComponent extends Component {
                         {this.state.hitno.map(h => <option key={h.value} value={h.value}>{h.label}</option>)}
                     </select>
                     <br/>
-                    <button className="loginButton" onClick={e => {this.setState({showMe:false});}} type="submit"> Nazad</button>
-                    <button className="loginButton" onClick={e => this.modifikujPodatke(e)} type="submit"> Promijeni podatke</button>
+                    <button className="backButton" onClick={e => {this.setState({showMe:false});}} type="submit"> Nazad</button>
+                    <button className="okButton" onClick={e => this.modifikujPodatke(e)} type="submit"> Promijeni podatke</button>
                 </div>
                  :null}
             </div>

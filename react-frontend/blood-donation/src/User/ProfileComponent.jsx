@@ -4,6 +4,7 @@ import crvena_kap from '../crvena_kap.png';
 import { toast } from 'react-toastify';
 import "./styleUser.css";
 import Moment from 'moment';
+import user_img from '../user.png';
 
 class ProfileComponent extends Component {
 
@@ -105,9 +106,12 @@ class ProfileComponent extends Component {
     render() {
         return ( 
             <div className="glavni" >
+                <div className="naslov">
+                <img className="user_img" src={crvena_kap} alt="Crvena kap"/>
+                <h2> Detalji o meni</h2>
+                </div>
                 <div className="left">
-                    <h2>Detalji o meni</h2>
-                    <img className="slika" src={crvena_kap} alt="Crvena kap"/>
+                    <img className="slika" src={user_img} alt="User details"/>
                     
                 </div>
                 <div className="right">
@@ -149,7 +153,7 @@ class ProfileComponent extends Component {
                     <label><b>Username: </b></label>
                     <label>{this.state.userData.username}</label>
                     <br/>
-                    <label><b>Uloga</b></label>
+                    <label><b>Uloga: </b></label>
                     <label>{this.state.role.roleName}</label>
                 </div>
                 <div>

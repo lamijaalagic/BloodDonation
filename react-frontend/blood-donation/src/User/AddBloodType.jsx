@@ -1,7 +1,8 @@
 import axios from 'axios';
 import React, {Component} from 'react';
 import { toast } from 'react-toastify';
-
+import dodaj_novi from '../add.png';
+import crvena_kap from '../crvena_kap.png';
 
 class AddBloodType extends Component {
 
@@ -68,6 +69,7 @@ class AddBloodType extends Component {
         return (
             <div className="userDiv">
                 <form className="registerForma">
+                <img className="user_img" src={crvena_kap} alt="Crvena kap"/>
                     <h2>Dodaj novu krvnu grupu</h2>
                     <div className="inputGroup">
                         <select className="selectBox" onChange={(e) => {this.handleChangeTipKrvi(e);}} value={this.state.bloodType} name="bloodType">
@@ -81,7 +83,7 @@ class AddBloodType extends Component {
                     <div>
                         <label style={{ color: "red" }}>{this.state.errorMessage}</label>
                         <br/>
-                        <button className="loginButton" onClick={e => this.createBloodType(e)} type="submit"> Dodaj krvnu grupu</button>
+                        <button className="okButton" onClick={e => this.createBloodType(e)} type="submit"><img className="icons" src={dodaj_novi}/> Dodaj krvnu grupu</button>
                     </div>
                 </form>
             </div>

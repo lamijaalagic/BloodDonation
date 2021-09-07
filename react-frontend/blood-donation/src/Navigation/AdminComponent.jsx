@@ -37,7 +37,7 @@ class AdminComponent extends Component {
                     <Route path="/admin/dodaj_rolu" component={AddRole} />
                     <Route path="/admin/dodaj_grupu" component={AddBloodType} />
                     
-                    <a className="odjava" href="/" >Odjava</a>
+                    <a className="odjava" href="/login" >Odjava</a>
                 </div>
             </Router>
         )

@@ -5,8 +5,15 @@
 }
 
 .slika {
-    width: 200px;
-    height: 100px;
+    width: 40%;
+    height: 40%;
+    
+}
+
+.user_img, .sl{
+    width: 80px;
+    height: 80px;
+    position: absolute left;
     
 }
 
@@ -16,8 +23,10 @@
 
 .okvir{
     text-align: left;
-    margin: 5px;
+    margin: 7px;
+    justify-content: space-between;
 }
+
 
 label {
     width: 30%;
@@ -30,3 +39,25 @@ label {
     float: left;
     width: 50%;
 }
+@media (prefers-reduced-motion: no-preference) {
+    .user_img {
+      animation: App-logo-spin infinite 3s linear;
+    }
+  }
+
+@keyframes App-logo-spin {
+    from {
+      transform: scaleY(0.1);
+    }
+    to {
+      transform: scaleY(1);
+    }
+  }
+
+.icons{
+  width: 20px;
+  height: 20px;
+  position:absolute right;
+  margin: 0;
+}
+
