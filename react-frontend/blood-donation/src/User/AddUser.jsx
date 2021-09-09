@@ -3,11 +3,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import dodaj_novi from '../add.png';
-import crvena_kap from '../crvena_kap.png';
-import filter from '../find.png';
-import promijeni from '../modify.png';
-import prikazi_detalje from '../show_details.png';
-import novi_user from '../user-add-icon.png'
+import novi_user from '../user-add-icon.png';
 
 
 class AddUser extends Component {
@@ -45,9 +41,9 @@ class AddUser extends Component {
     }
 
     validateForm = () => {
-        /*const validEmailRegex =
+        const validEmailRegex =
             RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
-        */
+        
         if (this.state.uloga.length===0) {
             this.setState({errorMessage:"Ne postoje uloge u bazi, prvo kreirajte uloge"});
             return false;
@@ -76,10 +72,10 @@ class AddUser extends Component {
             this.setState({errorMessage:"Unesite datum rodjenja."});
             return false;
         }
-        /*if (!validEmailRegex.test(this.state.email)) {
+        if (!validEmailRegex.test(this.state.email)) {
             this.setState({errorMessage:"Email nije validan."});
             return false;
-        } */      
+        }       
         if (this.state.residencePlace.length===0) {
             this.setState({errorMessage:"Unesite odgovarajuce podatke za mjesto prebivalista."});
             return false;
@@ -198,7 +194,7 @@ class AddUser extends Component {
         }).then(response => {
                 if (response.status === 200 || response.status === 201) {
                     this.props.history.push('/')
-                    alert('Uspješno kreiran racun')
+                    alert('Uspješno kreiran novi račun.')
                 }
             }).catch(err => {
                 console.log(err.response.data.message.toString())

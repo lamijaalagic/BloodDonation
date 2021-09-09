@@ -51,10 +51,19 @@ class DonationTableComponent extends Component {
                 { value: '12', label: 'Decembar' }
             ],
             odDatuma:null,
-            doDatuma:null
+            doDatuma:null,
+            errorMessage:''
         }
         this.handleChange = this.handleChange.bind(this)
 
+    }
+
+    validateForm = () => { 
+        if (this.state.NOVObloodQuantity<0) {
+            this.setState({errorMessage:"Unesite kolicinu doniranih doza, broj ne moze biti negativan."});
+            return false;
+        }
+        return true;
     }
 
     componentDidMount() {
@@ -105,7 +114,7 @@ class DonationTableComponent extends Component {
                 toast.error(err.response.data.message.toString(), { position: toast.POSITION.TOP_RIGHT })
             })
         }
-        else this.setState({errorMessage:"Unesite naziv mjesta po kojem zelite filtrirati."})
+        else this.setState({errorMessage:"Unesite username korisnika po kojem zelite filtrirati."})
     }
 
     filterByMjesto(e) {
@@ -129,16 +138,22 @@ class DonationTableComponent extends Component {
     }
 
     uredi(e,profil) {
-        this.setState({donacijaODABRANA:profil});
-        this.setState({showMe:true});
+        if (localStorage.getItem('role')==="ADMIN" || localStorage.getItem('role')==="EMPLOYEE_DOCTOR" || localStorage.getItem('role')==="EMPLOYEE_MEDICAL_TECH") {
+            this.setState({donacijaODABRANA:profil});
+            this.setState({showMe:true});
+        }
+        else alert("Opcija omogućena samo za privilegovanog korisnika.");
     }
 
     modifikujPodatke(e) {
         e.preventDefault();
         if (this.state.NOVObloodQuantity==0) this.state.NOVObloodQuantity=this.state.donacijaODABRANA.bloodQuantity;
         if (this.state.NOVOdonationPlace=='') this.state.NOVOdonationPlace=this.state.donacijaODABRANA.donationPlace;
+        if (!this.validateForm()) toast.error("Unesite vrijednosti", { position: toast.POSITION.TOP_RIGHT })
+        else {
         axios.put('http://localhost:8080/donations/'+this.state.donacijaODABRANA.id, {
                 user: this.state.donacijaODABRANA.user,
+                receiver: this.state.donacijaODABRANA.receiver,
                 donationDate: this.state.donacijaODABRANA.donationDate,
                 donationPlace:this.state.NOVOdonationPlace,
                 bloodQuantity:this.state.NOVObloodQuantity
@@ -149,7 +164,7 @@ class DonationTableComponent extends Component {
     }).then(response => {
             if (response.status === 200 || response.status === 201) {
                 this.props.history.push('/')
-                alert('Uspješno izmijenjeni podaci')
+                alert('Uspješno izmijenjeni podaci');
             }
         }).catch(err => {
             console.log(err.response.data.message.toString())
@@ -166,6 +181,7 @@ class DonationTableComponent extends Component {
                 const donacijeSVE=response.data;
                 this.setState({donacijeSVE});
             })
+        }
     }
 
     prikazDonatora(e,podaci) {
@@ -238,7 +254,7 @@ class DonationTableComponent extends Component {
     render() {
         return ( 
             <div className="userView">
-                <div className="naslov">
+                <div >
                 <img className="user_img" src={crvena_kap} alt="Crvena kap"/>
                 <h2>Tabela donacija</h2>
                 </div>
@@ -273,10 +289,10 @@ class DonationTableComponent extends Component {
                 <label><b><i>Filtriraj podatke u tabeli</i></b></label> 
                 <br/>
                     <input type="text" onChange={e => this.handleChange(e)} placeholder="Mjesto donacije" name="mjesto"/>
-                    <button className="loginButton" type="submit" onClick={e => this.filterByMjesto(e)}><img className="icons" src={filter}/>Filtriraj po mjestu</button>
+                    <button className="loginButton" type="submit" onClick={e => this.filterByMjesto(e)}><img className="icons" src={filter}/>Filtriraj listu po mjestu donacije</button>
                     <br/>
                     <input type="text" onChange={e => this.handleChange(e)} placeholder="Username" name="filterUsername" />
-                    <button className="loginButton" type="submit" onClick={e => this.filterByUser(e)}><img className="icons" src={filter}/>Filtriraj po korisniku</button>
+                    <button className="loginButton" type="submit" onClick={e => this.filterByUser(e)}><img className="icons" src={filter}/>Filtriraj listu po donatoru</button>
                     <br/>
                     <label style={{ color: "red" }}>{this.state.errorMessage}</label>                    
                 </div>
@@ -309,6 +325,7 @@ class DonationTableComponent extends Component {
                     <br/>
                     <input className="loginInput" type="number" onChange={e => this.handleChange(e)} placeholder="Kolicina doza krvi" name="NOVObloodQuantity" />
                     <br/>
+                    <label style={{ color: "red" }}>{this.state.errorMessage}</label>
                     <button className="backButton" onClick={e => {this.setState({showMe:false});}} type="submit"> Nazad</button>
                     <button className="okButton" onClick={e => this.modifikujPodatke(e)} type="submit"> Promijeni podatke</button>
                 </div>

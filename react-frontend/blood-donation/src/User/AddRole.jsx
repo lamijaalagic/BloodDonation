@@ -44,7 +44,7 @@ class AddRole extends Component {
         }).then(response => {
                 if (response.status === 200 || response.status === 201) {
                     this.props.history.push('/')
-                    toast.success('Uspješno kreirana uloga', { position: toast.POSITION.TOP_RIGHT })
+                    alert('Uspješno kreirana uloga');
                 }
             }).catch(err => {
                 console.log(err.response.data.message.toString())

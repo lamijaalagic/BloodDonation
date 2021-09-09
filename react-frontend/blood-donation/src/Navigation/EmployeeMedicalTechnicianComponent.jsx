@@ -18,7 +18,6 @@ class EmployeeMedicalTechnicianComponent extends Component {
                     <Route path="/employeeMedicalTechnician/transfuzije_krvi" component={TransfusionTableComponent} />
                     <Route path="/employeeMedicalTechnician/tablica_donacija" component={DonationTableComponent} />
                     <Route path="/employeeMedicalTechnician/dodaj_transfuziju" component={AddTransfusion} />
-                    <Route path="/employeeMedicalTechnician/dodaj_grupu" component={AddBloodType} />
                     <a className="odjava" href="/login" >Odjava</a>
                 </div>
             </Router>

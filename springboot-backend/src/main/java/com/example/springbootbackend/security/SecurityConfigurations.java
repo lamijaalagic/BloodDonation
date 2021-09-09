@@ -49,7 +49,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT,"/donations/{id}")
                 .hasAnyAuthority( "ADMIN","EMPLOYEE_DOCTOR")
 
-                .antMatchers(HttpMethod.POST,"/transfusionTable", "/bloodType")
+                .antMatchers(HttpMethod.POST,"/transfusionTable")
                 .hasAnyAuthority( "ADMIN","EMPLOYEE_DOCTOR", "EMPLOYEE_MEDICAL_TECH")
 
                 .antMatchers(HttpMethod.POST,"/donations")

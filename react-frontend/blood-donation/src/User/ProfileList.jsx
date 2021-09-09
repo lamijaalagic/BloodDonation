@@ -61,6 +61,25 @@ class ProfileList extends Component {
         this.popUpResponse = this.popUpResponse.bind(this)
     }
 
+    validateForm = () => {
+        const validEmailRegex =
+            RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
+
+        if (this.state.NOVOpassword.length>0 && this.state.NOVOpassword.length < 8) {
+            this.setState({errorMessage:"Potrebno je da password ima najmanje 8 znakova."});
+            return false;
+        }
+        if (this.state.NOVOlastname.length > 0 && this.state.NOVOlastname.length < 3) {
+            this.setState({errorMessage:"Potrebno je da prezime ima najmanje 3 znaka."});
+            return false;
+        }
+        if (this.state.NOVOemail.length>0 && !validEmailRegex.test(this.state.NOVOemail)) {
+            this.setState({errorMessage:"Email nije validan."});
+            return false;
+        }       
+        return true;
+    }
+
     componentDidMount() {
         axios.get('http://localhost:8080/user', {
             headers: {
@@ -158,8 +177,11 @@ class ProfileList extends Component {
     }  
 
     uredi(e,profil) {
+        if (localStorage.getItem('role')==="ADMIN") {
         this.setState({userODABRANI:profil});
         this.setState({showMe:true});
+        }
+        else alert("Opcija omogućena samo za privilegovanog korisnika.");
     }
 
     modifikujPodatke(e) {
@@ -171,6 +193,8 @@ class ProfileList extends Component {
         if (this.state.NOVOaddress=='') this.state.NOVOaddress=this.state.userODABRANI.address;
         if (this.state.NOVOphoneNumber=='') this.state.NOVOphoneNumber=this.state.userODABRANI.phoneNumber;
         if (this.state.NOVOemail=='') this.state.NOVOemail=this.state.userODABRANI.email;
+        if (!this.validateForm()) toast.error("Unesite vrijednosti", { position: toast.POSITION.TOP_RIGHT })
+        else {
         axios.put('http://localhost:8080/user/'+this.state.userODABRANI.id, {
             typeOfBlood: this.state.userODABRANI.typeOfBlood,
             role: this.state.userODABRANI.role,
@@ -192,7 +216,7 @@ class ProfileList extends Component {
     }).then(response => {
             if (response.status === 200 || response.status === 201) {
                 this.props.history.push('/')
-                alert('Uspješno izmijenjeni podaci')
+                alert('Uspješno izmijenjeni podaci.')
             }
         }).catch(err => {
             console.log(err.response.data.message.toString())
@@ -210,6 +234,7 @@ class ProfileList extends Component {
             const useriSVI= response.data;
             this.setState({useriSVI});
         })
+    }
     }
      
 
@@ -267,10 +292,10 @@ class ProfileList extends Component {
                     <select className="selectBox" onChange={(e) => {this.handleChangeRh(e);}} value={this.state.rhF} name="rhF">
                         {this.state.rh.map(rh => <option key={rh.value} value={rh.value}>{rh.label}</option>)}
                     </select> 
-                    <button className="loginButton" type="submit" onClick={e => this.filterByTipKrvi(e)}> <img className="icons" src={filter}/>Filtriraj po tipu krvi</button>
+                    <button className="loginButton" type="submit" onClick={e => this.filterByTipKrvi(e)}> <img className="icons" src={filter}/>Filtriraj listu po krvnoj grupi</button>
                     <br/>
                     <input type="text" onChange={e => this.handleChange(e)} placeholder="Username korisnika" name="korisnik" />
-                    <button className="loginButton" type="submit" onClick={e => this.filterByUsername(e)}> <img className="icons" src={filter}/>Filtriraj po username-u</button>
+                    <button className="loginButton" type="submit" onClick={e => this.filterByUsername(e)}> <img className="icons" src={filter}/>Filtriraj listu po username-u</button>
                     <br/>
                     <label style={{ color: "red" }}>{this.state.errorMessage}</label>
                 </div>
@@ -295,6 +320,7 @@ class ProfileList extends Component {
                         {this.state.potrebnaDonacija.map(potrebnaDonacija => <option key={potrebnaDonacija.value} value={potrebnaDonacija.value}>{potrebnaDonacija.label}</option>)}
                     </select>
                     <br/>
+                    <label style={{ color: "red" }}>{this.state.errorMessage}</label>
                     <button className="backButton" onClick={e => {this.setState({showMe:false});}} type="submit"> Nazad</button>
                     <button className="okButton" onClick={e => this.modifikujPodatke(e)} type="submit"> Promijeni podatke</button>
                 </div>

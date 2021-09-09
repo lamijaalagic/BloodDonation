@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import "./styleUser.css";
 import Moment from 'moment';
 import user_img from '../user.png';
+import moment from 'moment';
 
 class ProfileComponent extends Component {
 
@@ -38,7 +39,6 @@ class ProfileComponent extends Component {
     }
     componentDidMount() {
         //dohvatanje podataka
-        //alert(localStorage.getItem('access_token'))
         axios.get('http://localhost:8080/user/username?username='+localStorage.getItem('username'), {
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem('access_token')
@@ -46,7 +46,6 @@ class ProfileComponent extends Component {
         }).then(response=>{
             const userData = response.data;
             this.setState({ userData })
-            //alert(JSON.stringify(this.state.userData.typeOfBlood))
             const typeOfBlood = this.state.userData.typeOfBlood;
             this.setState({typeOfBlood})
             const role=this.state.userData.role;
@@ -82,24 +81,30 @@ class ProfileComponent extends Component {
                 }
                 if(i+1<duzina) i++;
             });
-            datum=new Date(datum)
-            var month=0;
-            var year=0;
-            if (datum.getMonth()>7){
-                year=datum.getFullYear()+1;
+            if (datum!=''){
+                datum=new Date(datum)
+                alert (datum)
+                var month=0;
+                var year=0;
+                var day=datum.getDate(); 
+                if (datum.getMonth()>7){
+                    year=datum.getFullYear()+1;
+                }
+                if (datum.getMonth()<=7){
+                    year=datum.getFullYear();
+                }
+                console.log("trenutni datum:"+month+" "+day+" "+year)
+                if (this.state.gender==='Z') {
+                    month=datum.getMonth()+4
+                }
+                if (this.state.gender==='M') {
+                    month=datum.getMonth()+3
+                }
+                       
+                this.state.nextDonationDate = day + '-' + month+1 + '-' + year;
+                alert(this.state.nextDonationDate)
             }
-            if (datum.getMonth()<=7){
-                year=datum.getFullYear();
-            }
-            console.log("trenutni datum:"+month+" "+day+" "+year)
-            if (this.state.gender==='Z') {
-                month=datum.getMonth()+4
-            }
-            if (this.state.gender==='M') {
-                month=datum.getMonth()+3
-            }
-            var day=datum.getDate();            
-            this.state.nextDonationDate = day + '-' + month+1 + '-' + year;
+            this.state.nextDonationDate= moment().format('DD-MM-YYYY');
         })
     }
 

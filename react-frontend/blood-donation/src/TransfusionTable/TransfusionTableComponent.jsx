@@ -57,10 +57,19 @@ class TransfusionTableComponent extends Component {
                 { value: '12', label: 'Decembar' }
             ],
             odDatuma:null,
-            doDatuma:null
+            doDatuma:null,
+            errorMessage:''
         }
         this.handleChange = this.handleChange.bind(this)
        
+    }
+
+    validateForm = () => {
+        if (this.state.NOVObloodQuantityNeeded<0) {
+            this.setState({errorMessage:"Unesite ispravan broj potrebnih donacija, ne može biti negativan."});
+            return false;
+        }
+        return true;
     }
 
     realizovanaTransfuzija (event, tranfuzija) {
@@ -155,7 +164,7 @@ class TransfusionTableComponent extends Component {
     
     filterByPotrebnomMjestu(e) {
         e.preventDefault();
-        if (this.state.mjesto!='') {
+        if (this.state.mjestoPotrebne!='') {
             axios.get('http://localhost:8080/transfusionTable/transfusions/place_of_needed_donation?place_of_needed_donation='+this.state.mjestoPotrebne, {
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem('access_token')
@@ -172,9 +181,12 @@ class TransfusionTableComponent extends Component {
         else this.setState({errorMessage:"Unesite naziv mjesta po kojem zelite filtrirati."})
     } 
 
-    uredi(e,profil) {
-        this.setState({transfuzijaODABRANA:profil});
-        this.setState({showMe:true});
+    uredi(e,profil) { 
+        if (localStorage.getItem('role')==="ADMIN" || localStorage.getItem('role')==="EMPLOYEE_DOCTOR" || localStorage.getItem('role')==="EMPLOYEE_MEDICAL_TECH") {
+            this.setState({transfuzijaODABRANA:profil});
+            this.setState({showMe:true});
+        }
+        else alert("Opcija omogućena samo za privilegovanog korisnika.");
     }
 
     handleChangeHitno = (selectedOption) => {
@@ -188,6 +200,8 @@ class TransfusionTableComponent extends Component {
         if (this.state.NOVOplaceOfNeededDonation=='') this.state.NOVOplaceOfNeededDonation=this.state.transfuzijaODABRANA.placeOfNeededDonation;
         if (this.state.NOVObloodQuantityNeeded=='') this.state.NOVObloodQuantityNeeded=this.state.transfuzijaODABRANA.bloodQuantityNeeded;
         if (this.state.NOVOdetails=='') this.state.NOVOdetails=this.state.transfuzijaODABRANA.details;
+        if (!this.validateForm()) toast.error("Unesite vrijednosti", { position: toast.POSITION.TOP_RIGHT })
+        else {
         axios.put('http://localhost:8080/transfusionTable/'+this.state.transfuzijaODABRANA.id, {
             bloodType: this.state.transfuzijaODABRANA.bloodType,
             user: this.state.transfuzijaODABRANA.user,
@@ -203,7 +217,7 @@ class TransfusionTableComponent extends Component {
     }).then(response => {
             if (response.status === 200 || response.status === 201) {
                 this.props.history.push('/')
-                alert('Uspješno izmijenjeni podaci')
+                alert('Uspješno izmijenjeni podaci.')
             }
         }).catch(err => {
             console.log(err.response.data.message.toString())
@@ -213,13 +227,14 @@ class TransfusionTableComponent extends Component {
             headers: {
                 Authorization: "Bearer " + localStorage.getItem('access_token')
             }
-    })
+        })
         .then (response=>{
             const transfuzije= response.data;
             this.setState({transfuzije});
             const transfuzijeSVE= response.data;
             this.setState({transfuzijeSVE});           
         })
+    }
     }
 
     kreirajIzvjestaj(e) {
@@ -256,7 +271,7 @@ class TransfusionTableComponent extends Component {
         return ( 
             <div className="userView">
                 <img className="user_img" src={crvena_kap} alt="Crvena kap"/>
-                <h2>Tabela potrebnih transfuzija krvi</h2>
+                <h2>Tabela potrebnih transfuzija/donacija krvi</h2>
                 <div>
                     <table>
                         <tr>
@@ -287,16 +302,16 @@ class TransfusionTableComponent extends Component {
                 <div className="filteri">
                     <label><b><i>Filtriraj podatke u tabeli</i></b></label>
                     <br/>
-                    <input type="text" onChange={e => this.handleChange(e)} placeholder="Tip krvi" name="tipKrvi"/>
-                    <button  className="loginButton" type="submit" onClick={e => this.filterByTipKrvi(e)}><img className="icons" src={filter}/>Filtriraj po tipu krvi</button>
+                    <input type="text" onChange={e => this.handleChange(e)} placeholder="Tip krvi (A,B...)" name="tipKrvi"/>
+                    <button  className="loginButton" type="submit" onClick={e => this.filterByTipKrvi(e)}><img className="icons" src={filter}/>Filtriraj listu po tipu krvi</button>
                     <br/>
                     <select className="selectBox" onChange={(e) => {this.handleChangeHitnost(e);}} value={this.state.hitnost} name="hitnost">
                         {this.state.hitno.map(h => <option key={h.value} value={h.value}>{h.label}</option>)}
                     </select>
-                    <button  className="loginButton" type="submit" onClick={e => this.filterByHitnost(e)}><img className="icons" src={filter}/>Filtriraj po hitnosti</button>
+                    <button  className="loginButton" type="submit" onClick={e => this.filterByHitnost(e)}><img className="icons" src={filter}/>Filtriraj listu po hitnosti</button>
                     <br/>
                     <input type="text" onChange={e => this.handleChange(e)} placeholder="Mjesto potrebne transfuzije" name="mjestoPotrebne" />
-                    <button  className="loginButton" type="submit" onClick={e => this.filterByPotrebnomMjestu(e)}><img className="icons" src={filter}/>Filtriraj po mjestu potrebne transfuzije</button>
+                    <button  className="loginButton" type="submit" onClick={e => this.filterByPotrebnomMjestu(e)}><img className="icons" src={filter}/>Filtriraj listu po mjestu potrebne transfuzije</button>
                     <br/>
                     <label style={{ color: "red" }}>{this.state.errorMessage}</label>
                 </div>
@@ -336,6 +351,7 @@ class TransfusionTableComponent extends Component {
                         {this.state.hitno.map(h => <option key={h.value} value={h.value}>{h.label}</option>)}
                     </select>
                     <br/>
+                    <label style={{ color: "red" }}>{this.state.errorMessage}</label>
                     <button className="backButton" onClick={e => {this.setState({showMe:false});}} type="submit"> Nazad</button>
                     <button className="okButton" onClick={e => this.modifikujPodatke(e)} type="submit"> Promijeni podatke</button>
                 </div>

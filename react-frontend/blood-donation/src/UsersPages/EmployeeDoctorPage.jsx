@@ -27,9 +27,6 @@ class EmployeeDoctorPage extends Component {
                     <Link className="linkovi"  className="linkovi" to="/employeeDoctor/dodaj_donaciju">
                         <li>Dodaj donaciju</li>
                     </Link>
-                    <Link className="linkovi"  to="/employeeDoctor/dodaj_grupu">
-                        <li>Dodaj krvnu grupu</li>
-                    </Link>
                 </ul>
             </nav>
         )

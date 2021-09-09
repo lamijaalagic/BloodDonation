@@ -120,11 +120,9 @@ class AddDonation extends Component {
                         this.obrisi_transfuziju(sessionStorage.getItem('idt'));
                         sessionStorage.clear();
                     }
-                    toast.success('Uspješno kreirana donacija', { position: toast.POSITION.TOP_RIGHT })
                 }
             }).catch(err => {
                 console.log(err.response.data.message.toString())
-                toast.error(err.response.data.message.toString(), { position: toast.POSITION.TOP_RIGHT })
             })
         }
     }
@@ -151,7 +149,7 @@ class AddDonation extends Component {
             <div className="userDiv">
                 <form className="registerForma">
                 <img className="user_img" src={crvena_kap} alt="Crvena kap"/>
-                    <h2> Dodaj novu donaciju</h2>
+                    <h2> Dodaj novu realizovanu donaciju</h2>
                     <div className="inputGroup">
                         <label>Datum donacije: </label>
                         <input className="loginInput" type="date" onChange={e => this.handleChange(e)} placeholder="Datum doniranja" name="donationDate"/>

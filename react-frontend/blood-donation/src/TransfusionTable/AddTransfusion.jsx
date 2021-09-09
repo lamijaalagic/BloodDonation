@@ -119,7 +119,7 @@ class AddTransfusion extends Component {
         }).then(response => {
                 if (response.status === 200 || response.status === 201) {
                     this.props.history.push('/')
-                    toast('Uspješno kreiran racun', { position: toast.POSITION.TOP_RIGHT })
+                    alert("Uspješno dodana potrebna donacija/transfuzija.");
                 }
             }).catch(err => {
                 console.log(err.response.data.message.toString())
@@ -133,7 +133,7 @@ class AddTransfusion extends Component {
             <div className="userDiv">
                 <form className="registerForma">
                 <img className="user_img" src={crvena_kap} alt="Crvena kap"/>
-                    <h2>Dodaj novu transfuziju</h2>
+                    <h2>Dodaj novu potrebnu transfuziju/donaciju</h2>
                     <div className="inputGroup">
                         <input className="loginInput" type="text" onChange={e => this.handleChange(e)} placeholder="Mjesto potrebne donacije" name="placeOfNeededDonation"/>
                         <br/>

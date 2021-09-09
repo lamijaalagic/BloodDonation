@@ -21,9 +21,6 @@ class EmployeeMedicalTechnician extends Component {
                     <Link className="linkovi"  to="/employeeMedicalTechnician/dodaj_transfuziju">
                         <li>Dodaj novu potrebnu transfuziju</li>
                     </Link>
-                    <Link className="linkovi"  to="/employeeMedicalTechnician/dodaj_grupu">
-                        <li>Dodaj krvnu grupu</li>
-                    </Link>
                 </ul>
             </nav>
         )
